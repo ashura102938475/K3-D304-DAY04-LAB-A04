@@ -185,7 +185,7 @@
         },
         {
           "role": "user",
-          "content": "Đổi sang tìm về xe điện EV"
+          "content": "Đổi sang tìm về xe điện"
         },
         {
           "role": "user",
@@ -198,7 +198,7 @@
           {
             "name": "lookup",
             "args": {
-              "query": "EV",
+              "query": "xe điện",
               "topic": "news",
               "timeframe": "day"
             }

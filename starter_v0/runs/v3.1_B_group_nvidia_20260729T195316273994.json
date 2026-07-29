@@ -1,0 +1,770 @@
+{
+  "run_id": "v3.1_B_group_nvidia_20260729T195316273994",
+  "version": "v3.1",
+  "artifact_version": "v3.1+paf120791248c+t81fac7e9a57f",
+  "prompt_hash": "af120791248ce3a46d870ea4c127f1a7414ba6f1e3914a79429ffbdac1e8faae",
+  "tools_hash": "81fac7e9a57f742533c9f9334c95cf97ae06a21dfe0299cc3074bb8ca8c94b9d",
+  "phase": "B",
+  "suite": "group",
+  "provider": "nvidia",
+  "model": "nvidia/nemotron-3-nano-30b-a3b",
+  "system_prompt": "/home/ezooo/Projects/K3-D304-DAY04-A04/starter_v0/artifacts/system_prompt.md",
+  "tools": "/home/ezooo/Projects/K3-D304-DAY04-A04/starter_v0/artifacts/tools.yaml",
+  "eval_cases": "data/eval_group.json",
+  "dataset_id": "day04_v2_research_group",
+  "dataset_role": "group",
+  "description": "10 team evaluation cases (5 single-turn, 5 multi-turn) testing custom tool routing, missing info clarification, safety boundaries, and context carryover.",
+  "generated_at": "2026-07-29T19:53:16",
+  "summary": {
+    "total_cases": 10,
+    "measured_cases": 10,
+    "provider_error_cases": 0,
+    "passed_cases": 10,
+    "case_accuracy": 1.0,
+    "tool_routing_accuracy": 1.0,
+    "argument_accuracy": 1.0,
+    "multiturn_accuracy": 1.0,
+    "failure_counts": {},
+    "observed_mismatch_counts": {}
+  },
+  "results": [
+    {
+      "id": "G01_github_search_python",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Routing repo search requests to custom github_search tool with language filter."
+      },
+      "input": "Tìm các repo GitHub về AI agent viết bằng Python",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "github_search",
+            "args": {
+              "query": "AI agent",
+              "language": "python"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "github_search",
+            "args": {
+              "language": "python",
+              "limit": 5,
+              "query": "AI agent"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "github_search",
+          "args": {
+            "language": "python",
+            "limit": 5,
+            "query": "AI agent"
+          },
+          "result": {
+            "tool": "github_search",
+            "query": "AI agent",
+            "error": "HTTP Error 403: rate limit exceeded",
+            "items": [
+              {
+                "title": "example/AI agent-repo",
+                "url": "https://github.com/example/AI agent",
+                "source": "github.com",
+                "summary": "Sample repository for AI agent",
+                "stars": 1250,
+                "language": "python"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G02_missing_url_clarify",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Asking clarification when target URL is missing."
+      },
+      "input": "Đọc giúp mình trang báo này với",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text",
+              "options": [],
+              "question": "Bạn muốn tôi đọc newspaper từ URL nào hoặc tên newspaper là gì?"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "response_type": "text",
+            "options": [],
+            "question": "Bạn muốn tôi đọc newspaper từ URL nào hoặc tên newspaper là gì?"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn muốn tôi đọc newspaper từ URL nào hoặc tên newspaper là gì?",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G03_confirm_telegram_send",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Requiring yes_no confirmation before external messaging."
+      },
+      "input": "Gửi thông báo này qua Telegram channel cho team mình nhé",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no",
+              "question": "Bạn có muốn gửi thông báo này qua Telegram channel cho team mình không?"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "response_type": "yes_no",
+            "question": "Bạn có muốn gửi thông báo này qua Telegram channel cho team mình không?"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn có muốn gửi thông báo này qua Telegram channel cho team mình không?",
+            "response_type": "yes_no",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G04_out_of_scope_recipe",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Refusing non-research queries without invoking tools."
+      },
+      "input": "Cho mình công thức làm món phở bò Hà Nội chuẩn vị",
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Chắc chắn rồi! Dưới đây là công thức làm **phở bò Hà Nội** “chuẩn vị” that many Vietnamese home cooks and restaurants use as a reference. Bạn có thể điều chỉnh một chút tùy theo khẩu vị và nguồn nguyên liệu mà mình có.\n\n---\n\n## 1. Nguyên liệu\n\n### Phần xương & nước dùng\n| Nguyên liệu | Số lượng (cho 4–5 bát) |\n|------------|------------------------|\n| Xương bò (cổ, gân, gân ống) | 2–2.5 kg |\n| Xương ống bò (đục) | 500 g |\n| Thịt bò (gầu, gân, gân ống) | 500 g (cắt miếng 3–5 cm) |\n| Nước lọc | 4–5 lít |\n| Nước mắm | 2–3 muỗng canh |\n| Đường (đường cát) | 1 muỗng canh |\n| Muối | 1 muỗng canh (hoặc vừa đủ) |\n| Hành tây | 1 củ (đốt cháy) |\n| Hành khô | 1 củ (đốt cháy) |\n| Gừng | 1 củ (đập dập, dẹt cháy) |\n| Thảo mộc (ngò gai, ngò ô) | 1 nắm (rửa sạch) |\n| Quế (cây quế) | 1 khúc (khoảng 2 cm) |\n| Hoa hồi | 2–3 quả |\n| Thảo quả (đảo) | 2–3 quả |\n| Thảo mộc (đậu xanh, hồi) | 1–2 nhánh mỗi loại |\n\n### Phần bánh phở & các loại thịt\n| Nguyên liệu | Số lượng |\n|------------|----------|\n| Bánh phở (sợi dày) | 500 g–600 g |\n| Thịt bò tái (tái lưng, tái gầu) | 300–400 g (cắt lát mỏng) |\n| Gầu bò (nạm) | 200–300 g (cắt lát mỏng) |\n| Gân bò (đũi) | 150–200 g (cắt lát mỏng) |\n| Hành lá | 1 nắm (cắt nhỏ) |\n| Giá đỗ | 200 g (rửa sạch) |\n| Rau thơm (húng quế, rau mùi, rau mùi) | 1 nắm mỗi loại |\n| Ớt tươi | 1–2 quả (cắt lát, tùy thích) |\n| Chanh (cắt miếng) | 1 quả |\n\n### Nước chấm (tùy chọn)\n| Nguyên liệu | Số lượng |\n|------------|----------|\n| Nước mắm | 2 muỗng canh |\n| Đường | 1 muỗng canh |\n| Nước cốt chanh | 1 muỗng canh |\n| Tỏi băm | 1 cây trầu (hoặc ½ cây) |\n| Ớt băm | 1 cây (tùy khẩu vị) |\n\n---\n\n## 2. Các bước thực hiện\n\n### Bước 1: Sơ chế xương & hầm nước dùng\n1. **Rửa sạch xương** (xương bò, xương ống) bằng nước lạnh. Đun sôi một nồi nước, cho xương vào sôi 2–3 phút, sau đó vớt ra rửa lại lần nữa để loại bỏ bọt và tạp chất.  \n2. Đổ **4–5 lít nước lạnh** vào nồi, cho xương vào, **đun sôi** rồi **lưu lại** (để loại bỏ bọt bám trên mặt). Khi nước sôi lại, **giảm lửa** và **đun liu riu** trong **3–4 giờ** (hoặc dùng nồi áp suất 30–40 phút).  \n3. Khi hầm xong, **lọc sạch** nước dùng, bỏ bọt và tạp chất. Nước dùng nên trong, trong suốt, màu nâu hơi vàng.\n\n### Bước 2: Nêm nếm nước dùng\n1. Khi nước dùng đã sôi lại, **thêm** hành tây, hành khô, gừng đã đốt cháy, quế, hồi, thảo quả, thảo mộc (đậu xanh, hồi). Đun **đun sôi** rồi **đun liu riu** 30 phút nữa.  \n2. **Nêm** nước mắm, đường, muối cho vừa ăn. Nếm thử, nếu cần, có thể thêm chút **đường** hoặc **muối** để cân bằng vị.  \n3. Khi hương vị ổn, **tắt bếp** và **lọc lại** (để loại bỏ các nguyên liệu gia vị). Nước dùng siêu trong, sạch sẽ.\n\n### Bước 3: Sơ chế thịt & chuẩn bị bánh phở\n1. **Thịt bò tái** và **gầu** cắt lát mỏng (khoảng 0.3 mm). Đặt vào **bát** riêng, **ngâm** trong nước lạnh khoảng 10 phút để thịt giữ trắng khi ăn.  \n2. **Gân** và **nạm** cũng cắt lát mỏng, có thể **luộc** nhanh (30 giây) rồi để nguội để ăn kèm.  \n3. **Bánh phở** ngâm **nước ấm** khoảng 5–7 phút cho mềm, sau đó **vớt** ra để ráo. Đặt bánh vào bát ăn.\n\n### Bước 4: Lắp bát phở\n1. **Cho** bánh phở vào bát, **đổ** nước dùng **đầu** (khoảng 2/3 bát).  \n2. **Thêm** các loại thịt (tái, gầu, gân) lên trên. Khi ăn, **thịt** sẽ chín ngay trong nước dùng đang sôi.  \n3. **Rắc** hành lá, giá đỗ, rau thơm (húng quế, rau mùi, rau mùi) lên trên.  \n4. **Thêm** ớt tươi, chanh, và **nước chấm** nếu muốn.  \n5. **Khuấy nhẹ** trước khi ăn để hòa quyện vị.\n\n---\n\n## 3. Một số lưu ý “chuẩn vị”\n\n| Lưu ý | Giải thích |\n|------|------------|\n| **Nước dùng trong suốt** | Không nên để lại bọt, bẩn bẩn. Việc lọc lại lần cuối giúp nước trong, không bị mù sương. |\n| **Hương vị đậm đà** | Nước mắm và đường là “cánh đồng” của vị, không nên để quá ít – nếu thiếu, phở sẽ “khô”. |\n| **Thịt tái** | Khi cho vào bát, nước dùng đang sôi, thịt chỉ cần **30 giây** để chín tới, giữ trắng, không bị cứng. |\n| **Rau thơm** | Đặt rau vào bát ngay trước khi ăn để giữ trọn hương thơm. |\n| **Nước chấm** | Nước chấm truyền thống của phở Hà Nội thường **không** dùng, nhưng nếu muốn vị chua nhẹ, có thể dùng nước mắm + chanh + đường + tỏi + ớt. |\n\n---\n\n## 4. Tổng kết nhanh (điểm checklist)\n\n- [ ] Rửa sạch xương, hầm 3–4 giờ → lọc nước dùng.  \n- [ ] Nêm nước mắm, đường, muối → vị ngọt‑mặn‑cay‑bổ.  \n- [ ] Đốt cháy hành, gừng, quế, hồi → tạo hương thơm đặc trưng.  \n- [ ] Sơ chế bánh phở, thịt tái, gầu, gân.  \n- [ ] Lắp bát: bánh → nước dùng → thịt → rau thơm, giá đỗ.  \n- [ ] Ăn kèm ớt, chanh, nước chấm tùy khẩu vị.\n\nBạn có thể tham khảo thêm các video “phở bò Hà Nội chuẩn vị” trên YouTube để thấy cách cắt thịt, cách đốt cháy hành và cách lọc nước dùng chi tiết hơn. Chúc bạn thành công và có một bát phở bò thơm ngon, chuẩn vị Hà Nội! 🍜🥢",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G05_arxiv_papers_search",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Routing academic scientific paper queries to papers tool."
+      },
+      "input": "Tìm bài báo khoa học mới nhất về Retrieval-Augmented Generation",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "papers",
+            "args": {
+              "query": "Retrieval-Augmented Generation"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "papers",
+            "args": {
+              "query": "Retrieval-Augmented Generation",
+              "sort_by": "lastUpdatedDate",
+              "max_results": 1
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "papers",
+          "args": {
+            "query": "Retrieval-Augmented Generation",
+            "sort_by": "lastUpdatedDate",
+            "max_results": 1
+          },
+          "result": {
+            "tool": "arxiv_search",
+            "query": "Retrieval-Augmented Generation",
+            "api_query": "all:Retrieval-Augmented AND all:Generation",
+            "total_results": 7424,
+            "items": [
+              {
+                "arxiv_id": "2607.22042v2",
+                "title": "LAMAR: An Open Language-Aware Multilingual Alignment Reranker",
+                "summary": "In multilingual retrieval augmented generation pipelines, an embedding model can retrieve relevant documents written in multiple languages, which are subsequently reranked before answer generation. However, it remains unclear whether existing multilingual rerankers consider document language when ordering semantically relevant candidates. Our analysis shows that these rerankers do not consistently prioritize documents written in the same language as the query when semantically equivalent documents are available across languages, even though document language can affect answer generation. We release LAMAR, a language aware multilingual cross encoder trained to account for both semantic relevance and language coherence. LAMAR first uses English anchored relevance distillation to establish consistent relevance scoring across multilingual inputs and then applies preference alignment for language coherence to encourage documents written in the same language as the query to receive higher rankings while retaining semantic relevance. In a controlled experiment designed to assess language coherence, LAMAR achieves the best performance overall and across all languages examined individually. LAMAR also remains competitive on established multilingual reranking benchmarks. In practical retrieval settings, LAMAR achieves the best results across all reported metrics when reranking candidates retrieved in the first stage. These results demonstrate that LAMAR accounts for language coherence while achieving strong performance on general multilingual reranking benchmarks.",
+                "authors": [
+                  "Seongtae Hong",
+                  "Youngjoon Jang",
+                  "Jungseob Lee",
+                  "Seungyoon Lee",
+                  "Heuiseok Lim"
+                ],
+                "published": "2026-07-24T07:11:42Z",
+                "updated": "2026-07-28T16:54:28Z",
+                "url": "http://arxiv.org/abs/2607.22042v2",
+                "pdf_url": "https://arxiv.org/pdf/2607.22042v2",
+                "source": "arxiv.org",
+                "primary_category": "cs.IR",
+                "categories": [
+                  "cs.IR"
+                ]
+              }
+            ],
+            "rate_limit_note": "arXiv may return 429 if called too frequently; this tool waits at least 3 seconds between requests in-process."
+          }
+        }
+      ]
+    },
+    {
+      "id": "G06_multiturn_github_language",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn parameter refinement for github_search."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm repo GitHub về RAG"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ lấy các repo viết bằng TypeScript thôi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "github_search",
+            "args": {
+              "query": "RAG",
+              "language": "typescript"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "github_search",
+            "args": {
+              "language": "TypeScript",
+              "query": "RAG"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "github_search",
+          "args": {
+            "language": "TypeScript",
+            "query": "RAG"
+          },
+          "result": {
+            "tool": "github_search",
+            "query": "RAG",
+            "language": "TypeScript",
+            "sort": "stars",
+            "items": [
+              {
+                "title": "langgenius/dify",
+                "url": "https://github.com/langgenius/dify",
+                "source": "github.com",
+                "summary": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+                "stars": 150678,
+                "language": "TypeScript"
+              },
+              {
+                "title": "ruvnet/ruflo",
+                "url": "https://github.com/ruvnet/ruflo",
+                "source": "github.com",
+                "summary": "🌊 The leading agent meta-harness. Deploy intelligent multi-player swarms, coordinate autonomous workflows, and build conversational AI systems. Features adaptive memory, self-learning intelligence, RAG integration, and native Claude Code / Codex / Hermes and many more Integrated",
+                "stars": 66457,
+                "language": "TypeScript"
+              },
+              {
+                "title": "FlowiseAI/Flowise",
+                "url": "https://github.com/FlowiseAI/Flowise",
+                "source": "github.com",
+                "summary": "Build AI Agents, Visually",
+                "stars": 55010,
+                "language": "TypeScript"
+              },
+              {
+                "title": "abhigyanpatwari/GitNexus",
+                "url": "https://github.com/abhigyanpatwari/GitNexus",
+                "source": "github.com",
+                "summary": "GitNexus: The Zero-Server Code Intelligence Engine -       GitNexus is a client-side knowledge graph creator that runs entirely in your browser. Drop in a git repository (Github, Gitlab, Azure, Local) or ZIP file, and get an interactive knowledge graph with a built in Graph RAG Agent. Perfect for code exploration",
+                "stars": 44781,
+                "language": "TypeScript"
+              },
+              {
+                "title": "ItzCrazyKns/Vane",
+                "url": "https://github.com/ItzCrazyKns/Vane",
+                "source": "github.com",
+                "summary": "Vane is an AI-powered answering engine.",
+                "stars": 35902,
+                "language": "TypeScript"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G07_multiturn_karpathy_tweets",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn clarification and entity handle mapping for Andrej Karpathy."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Xem bài đăng mới nhất trên Twitter"
+        },
+        {
+          "role": "user",
+          "content": "Của Andrej Karpathy nhé"
+        },
+        {
+          "role": "user",
+          "content": "Lấy 5 tweet"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "karpathy",
+              "limit": 5
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "limit": 5,
+              "screenname": "karpathy"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "limit": 5,
+            "screenname": "karpathy"
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "karpathy",
+            "items": [
+              {
+                "title": "One pattern I find useful for working with LLMs is a nice long ramble session. Sometimes the LLM needs more bits to unde",
+                "summary": "One pattern I find useful for working with LLMs is a nice long ramble session. Sometimes the LLM needs more bits to understand what you're trying to achieve, but you're too lazy to type them. In these cases I like to lean back, switch to /voice and just ramble for like 10 minutes, total mess, anything goes, full stream of consciousness. Sometimes I declare it up top, something like \"switching to speech recognition sorry for any typos...\". Sometimes I turn it into a small interview of a few turns. But I find that the LLMs are somehow very good at reconstructing long incoherent rambles and often their echo of your own tangle of thoughts comes out quite a bit cleaner than what you started with. The result is that you improve the mind meld and have to correct things less from that point on.",
+                "url": "https://x.com/karpathy/status/2079610838143623371",
+                "source": "@karpathy",
+                "date": "Tue Jul 21 16:53:55 +0000 2026",
+                "metrics": {
+                  "favorites": 48676,
+                  "retweets": 4067,
+                  "views": "3903661"
+                }
+              },
+              {
+                "title": "RT @jarredsumner: Rewriting Bun in Rust",
+                "summary": "RT @jarredsumner: Rewriting Bun in Rust\n\nhttps://t.co/Rl8bcaxBFc",
+                "url": "https://x.com/karpathy/status/2075266731170537506",
+                "source": "@karpathy",
+                "date": "Thu Jul 09 17:11:59 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 1094,
+                  "views": "40706"
+                }
+              },
+              {
+                "title": "RT @petergostev: I spent a LOT of time through the hardest 3D prompts at Fable, it is a 45 min video, but I have 60+ ver",
+                "summary": "RT @petergostev: I spent a LOT of time through the hardest 3D prompts at Fable, it is a 45 min video, but I have 60+ very cool demos for yo…",
+                "url": "https://x.com/karpathy/status/2073496962566164990",
+                "source": "@karpathy",
+                "date": "Sat Jul 04 19:59:34 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 166,
+                  "views": "40696"
+                }
+              },
+              {
+                "title": "RT @Etched: We're coming out of stealth.",
+                "summary": "RT @Etched: We're coming out of stealth.\n\nWe've built our first racks after a successful A0 tapeout, $1B+ in customer contracts, and $800m…",
+                "url": "https://x.com/karpathy/status/2072051876816945486",
+                "source": "@karpathy",
+                "date": "Tue Jun 30 20:17:18 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 943,
+                  "views": "41084"
+                }
+              },
+              {
+                "title": "RT @EngramLab: https://t.co/CGIef5lIBI",
+                "summary": "RT @EngramLab: https://t.co/CGIef5lIBI",
+                "url": "https://x.com/karpathy/status/2069579404163031082",
+                "source": "@karpathy",
+                "date": "Wed Jun 24 00:32:35 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 248,
+                  "views": "39811"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G08_multiturn_confirm_cancel",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn user cancellation resulting in no tool execution."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Đăng tin tức AI hôm nay lên Telegram"
+        },
+        {
+          "role": "user",
+          "content": "Thôi hủy bỏ, đừng đăng nữa"
+        }
+      ],
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "<no-output>",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G09_multiturn_news_carryover",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn carryover of news topic and day timeframe with updated query."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin công nghệ hôm nay có gì?"
+        },
+        {
+          "role": "user",
+          "content": "Đổi sang tìm về xe điện"
+        },
+        {
+          "role": "user",
+          "content": "Vẫn là tin hôm nay nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "xe điện",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "max_results": 5,
+              "timeframe": "day",
+              "topic": "news",
+              "query": "xe điện"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "max_results": 5,
+            "timeframe": "day",
+            "topic": "news",
+            "query": "xe điện"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "xe điện",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "30-MW Nebraska microgrid gets a non-lithium battery boost - Utility Dive",
+                "url": "https://www.utilitydive.com/news/30-mw-nebraska-microgrid-gets-a-non-lithium-battery-boost/826393/",
+                "source": "utilitydive.com",
+                "summary": "Let Utility Dive's free newsletter keep you informed, straight from your inbox. - [x]  Storage Weekly Every Tuesday. - [x]  Renewable Energy Weekly Every Thursday. - [x]  By signing up to receive our newsletter, you agree to our Terms of Use and Privacy Policy. Lincoln Electric System is energizing a 3-MW/12-MWh zinc-based battery to support the Nebraska state Capitol complex and other critical infrastructure. An energy storage system developed by Lincoln Electric System in Nebraska, utilizing a zinc-based battery manufactured by Eos Energy Enterprises. *   A 30-MW microgrid serving state and local government offices, public safety facilities and other critical infrastructure in Nebraska’s state capital is about to get a boost from a 3-MW/12-MWh zinc-based battery, the city’s municipal utility said earlier this month. *   Lincoln Electric System says its first grid-scale battery energy storage project will increase the microgrid’s capacity by about 10%.",
+                "score": 0.06037975
+              },
+              {
+                "title": "Enova confirms rare earth discovery in Brazil - Mining.com.au",
+                "url": "https://mining.com.au/enova-confirms-rare-earth-discovery-in-brazil/",
+                "source": "mining.com.au",
+                "summary": "Enova Mining (ASX:ENV) reports rare earth element mineralisation following initial auger drilling at the Santo António Do Jacinto Project in Minas Gerais, Brazil. Key intercepts from four auger holes totalling 27m include 6m @ 2,176 parts per million (ppm) total rare earth oxide (TREO) and 26% NdPr from surface; 6m @ 1,136 ppm TREO and 24% NdPr from surface; and 4m @ 1,240 ppm TREO and 25% NdPr from surface. Peak results reached 2,485 ppm TREO @ 26% NdPr from surface and 2,319 ppm TREO @ 25.5% NdPr from surface, highlighting the quality of the mineralised system identified to date. Surface geochemical sampling from 52 rock samples also confirmed multiple TREO and NdPr hits within saprolite targets, including 1,779 ppm and 26% NdPr and 1,485 ppm and 27% NdPr. CEO Eric Vesel says the ‘consistently high’ NdPr content, which averages approximately 25% of TREO, is ‘particularly encouraging’. Enova is planning additional auger drilling in previously untested areas at the project to assess the extent and continuity of near-surface saprolite-hosted rare earth mineralisation.",
+                "score": 0.055397574
+              },
+              {
+                "title": "Pace Digitek Group Crosses 300 Utility-Scale BESS Containers, Plans 10 GWh Manufacturing Capacity - Energetica India Magazine",
+                "url": "https://www.energetica-india.net/news/pace-digitek-group-crosses-300-utility-scale-bess-containers-plans-10-gwh-manufacturing-capacity",
+                "source": "energetica-india.net",
+                "summary": "Home › Energy Storage ›Pace Digitek Group Crosses 300 Utility-Scale BESS Containers, Plans 10 GWh Manufacturing Capacity. # Pace Digitek Group Crosses 300 Utility-Scale BESS Containers, Plans 10 GWh Manufacturing Capacity. Lineage Power, a subsidiary of Pace Digitek, has crossed the milestone of manufacturing 300 utility-scale BESS containers, representing approximately 1.5 GWh of storage capacity. Further, the company has announced its plan to expand capacity from the existing 2.5 GWh to 10 GWh. Pace Digitek has announced that its subsidiary Lineage Power (LPPL) has crossed the milestone of manufacturing 300 utility-scale Battery Energy Storage System (BESS) containers, representing around 1.5 GWh of battery energy storage capacity. Commenting on the development, Venugopal Rao Maddisetty, Chairman and Managing Director, Pace Digitek, said, “Crossing the milestone of 300 utility-scale BESS containers is an important achievement in our journey of building an integrated battery energy storage business. These capabilities enable Pace Digitek to deliver end-to-end battery energy storage solutions throughout the project lifecycle from manufacturing and system integration to project execution and lifecycle services, asserted the company.",
+                "score": 0.04503662
+              },
+              {
+                "title": "Stag Industrial (NYSE:STAG) Announces Quarterly Earnings Results, Beats Expectations By $0.01 EPS - MarketBeat",
+                "url": "https://www.marketbeat.com/instant-alerts/stag-industrial-nysestag-announces-quarterly-earnings-results-beats-expectations-by-001-eps-2026-07-28/",
+                "source": "marketbeat.com",
+                "summary": "QQQ   675.49   (-0.97%). Chips & Clips: Memory Tariffs Rewire Tech Supply Chains. 5 AI Stocks Are Pulling Back—Which Growth Catalysts Still Look Strongest? 3 Stocks Standing Out and 2 Losing Momentum as the Tech Rally Cracks. Here’s the stock symbol I’ve promised (Ad). Amkor Sells Off After Earnings—Why Weak Guidance Isn't the Real Story. Is the Market Mispricing ServiceNow's AI Future? The SpaceX IPO Wasn't For You (Ad). Nano Nuclear’s Air Force Contract Puts Its Short-Squeeze Setup in Focus. 3 Value ETFs to Consider as Growth Stocks Lag Behind. → Three oil giants buried the same discovery for 50 years  (From Behind the Markets) (Ad).",
+                "score": 0.03270392
+              },
+              {
+                "title": "G50 obtains $26.25 million for US drilling - Mining.com.au",
+                "url": "https://mining.com.au/g50-raises-26-25-million-for-us-drilling/",
+                "source": "mining.com.au",
+                "summary": "G50 (ASX:G50) has received firm commitments for a $26.25 million institutional placement to accelerate exploration at its Golconda and White Caps projects in the US. G50 says the proceeds will accelerate exploration at its Golconda Gold-Silver-Gallium Project in Arizona and White Caps Gold Project in Nevada. *“This support reflects confidence in G50’s strategy of systematically advancing our U.S. portfolio of precious and critical mineral assets, and provides the funding required to accelerate drilling and metallurgical test work across Golconda and White Caps,”* Wallace says.",
+                "score": 0.031861935
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G10_multiturn_clarify_then_fetch",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn URL provision after initial missing info prompt."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tóm tắt giúp mình bài viết"
+        },
+        {
+          "role": "user",
+          "content": "Đây là link: https://github.com/blog/ai-future"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://github.com/blog/ai-future"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://github.com/blog/ai-future"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "fetch",
+          "args": {
+            "url": "https://github.com/blog/ai-future"
+          },
+          "result": {
+            "tool": "read_url",
+            "url": "https://github.com/blog/ai-future",
+            "items": [
+              {
+                "title": "Page not found · GitHub · GitHub",
+                "url": "https://github.com/blog/ai-future",
+                "source": "github.com",
+                "summary": "[Skip to content](https://github.com/blog/ai-future#start-of-content)\n\nYou signed in with another tab or window. [Reload](https://github.com/blog/ai-future) to refresh your session.You signed out in another tab or window. [Reload](https://github.com/blog/ai-future) to refresh your session.You switched accounts on another tab or window. [Reload](https://github.com/blog/ai-future) to refresh your session.Dismiss alert\n\n{{ message }}\n\n![](<Base64-Image-Removed>)\n\n![404 “This is not the web page you are looking for”](<Base64-Image-Removed>)![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nFind code, projects, and people on GitHub:\n\nSearch\n\n[Contact Support](https://support.github.com/?tags=dotcom-404) —\n[GitHub Status](https://githubstatus.com/) —\n[@githubstatus](https://x.com/githubstatus)\n\nYou can’t perform that action at this time."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
