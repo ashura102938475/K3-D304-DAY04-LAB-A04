@@ -1,35 +1,34 @@
 {
-  "run_id": "v3_B_group_nvidia_20260729T113646411525",
+  "run_id": "v3_B_group_nvidia_20260729T163921180355",
   "version": "v3",
-  "artifact_version": "v3+p61dc928c2656+t522132a7f072",
-  "prompt_hash": "61dc928c2656a14fe7dbf7c968032a3dc6b6b8db93beb041f02131b0c61a5ed6",
-  "tools_hash": "522132a7f072c69e5ef9d50697b0b9ad93547687422caf40eb0037e58ec11c28",
+  "artifact_version": "v3+pee78ea64bd7f+t81fac7e9a57f",
+  "prompt_hash": "ee78ea64bd7f0de2eb9bc4b4d3f5479aa104f97ccbbb3b0641076d2239acd4a4",
+  "tools_hash": "81fac7e9a57f742533c9f9334c95cf97ae06a21dfe0299cc3074bb8ca8c94b9d",
   "phase": "B",
   "suite": "group",
   "provider": "nvidia",
   "model": "nvidia/nemotron-3-nano-30b-a3b",
-  "system_prompt": "/home/ezooo/Projects/K3-D304-DAY04-A04/starter_v0/artifacts/system_prompt.md",
-  "tools": "/home/ezooo/Projects/K3-D304-DAY04-A04/starter_v0/artifacts/tools.yaml",
-  "eval_cases": "data/eval_group.json",
+  "system_prompt": "D:\\vin_lab\\K3-D304-DAY04-A04\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\vin_lab\\K3-D304-DAY04-A04\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_group.json",
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
   "description": "10 team evaluation cases (5 single-turn, 5 multi-turn) testing custom tool routing, missing info clarification, safety boundaries, and context carryover.",
-  "generated_at": "2026-07-29T11:36:46",
+  "generated_at": "2026-07-29T16:39:21",
   "summary": {
     "total_cases": 10,
     "measured_cases": 10,
     "provider_error_cases": 0,
-    "passed_cases": 8,
-    "case_accuracy": 0.8,
+    "passed_cases": 9,
+    "case_accuracy": 0.9,
     "tool_routing_accuracy": 1.0,
-    "argument_accuracy": 0.8,
+    "argument_accuracy": 0.9,
     "multiturn_accuracy": 0.8,
     "failure_counts": {
-      "wrong_boundary": 1,
       "wrong_arg_value": 1
     },
     "observed_mismatch_counts": {
-      "wrong_arg_value": 2
+      "wrong_arg_value": 1
     }
   },
   "results": [
@@ -62,9 +61,9 @@
           {
             "name": "github_search",
             "args": {
-              "language": "python",
               "limit": 5,
-              "query": "AI agent"
+              "query": "AI agent",
+              "language": "python"
             }
           }
         ],
@@ -78,9 +77,9 @@
         {
           "tool": "github_search",
           "args": {
-            "language": "python",
             "limit": 5,
-            "query": "AI agent"
+            "query": "AI agent",
+            "language": "python"
           },
           "result": {
             "tool": "github_search",
@@ -93,7 +92,7 @@
                 "url": "https://github.com/NousResearch/hermes-agent",
                 "source": "github.com",
                 "summary": "The agent that grows with you",
-                "stars": 221986,
+                "stars": 222095,
                 "language": "Python"
               },
               {
@@ -101,7 +100,7 @@
                 "url": "https://github.com/langflow-ai/langflow",
                 "source": "github.com",
                 "summary": "Langflow is a powerful tool for building and deploying AI-powered agents and workflows.",
-                "stars": 152550,
+                "stars": 152561,
                 "language": "Python"
               },
               {
@@ -109,7 +108,7 @@
                 "url": "https://github.com/langchain-ai/langchain",
                 "source": "github.com",
                 "summary": "The agent engineering platform.",
-                "stars": 142833,
+                "stars": 142859,
                 "language": "Python"
               },
               {
@@ -117,7 +116,7 @@
                 "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
                 "source": "github.com",
                 "summary": "100+ AI Agents, Agent Skills and RAG Apps - Free and Open Source.",
-                "stars": 128565,
+                "stars": 128633,
                 "language": "Python"
               },
               {
@@ -125,7 +124,7 @@
                 "url": "https://github.com/browser-use/browser-use",
                 "source": "github.com",
                 "summary": "🌐 Make websites accessible for AI agents. Automate tasks online with ease.",
-                "stars": 107154,
+                "stars": 107174,
                 "language": "Python"
               }
             ]
@@ -161,7 +160,7 @@
           {
             "name": "clarify",
             "args": {
-              "question": "Bạn muốn tôi đọc/trích dẫn bài báo từ URL nào? Vui lòng cung cấp địa chỉ web hoặc tên tờ báo để tôi có thể tra cứu.",
+              "question": "Bạn muốn tôi đọc trang báo nào? Vui lòng cung cấp URL hoặc tên cụ thể của trang báo để tôi có thể tra cứu và đọc nội dung.",
               "response_type": "text"
             }
           }
@@ -176,12 +175,12 @@
         {
           "tool": "clarify",
           "args": {
-            "question": "Bạn muốn tôi đọc/trích dẫn bài báo từ URL nào? Vui lòng cung cấp địa chỉ web hoặc tên tờ báo để tôi có thể tra cứu.",
+            "question": "Bạn muốn tôi đọc trang báo nào? Vui lòng cung cấp URL hoặc tên cụ thể của trang báo để tôi có thể tra cứu và đọc nội dung.",
             "response_type": "text"
           },
           "result": {
             "tool": "ask_user",
-            "question": "Bạn muốn tôi đọc/trích dẫn bài báo từ URL nào? Vui lòng cung cấp địa chỉ web hoặc tên tờ báo để tôi có thể tra cứu.",
+            "question": "Bạn muốn tôi đọc trang báo nào? Vui lòng cung cấp URL hoặc tên cụ thể của trang báo để tôi có thể tra cứu và đọc nội dung.",
             "response_type": "text",
             "options": [],
             "awaiting_user": true
@@ -210,38 +209,47 @@
         ]
       },
       "result": {
-        "passed": false,
+        "passed": true,
         "routing_correct": true,
-        "args_correct": false,
+        "args_correct": true,
         "actual_tool_calls": [
           {
             "name": "clarify",
             "args": {
-              "response_type": "text",
-              "question": "Bạn muốn gửi tin nhắn gì qua Telegram cho team?"
+              "response_type": "yes_no",
+              "question": "Bạn có muốn gửi thông báo này qua Telegram channel cho team của mình không?",
+              "options": [
+                "Có",
+                "Không"
+              ]
             }
           }
         ],
         "actual_text": null,
         "case_failure_type": "wrong_boundary",
-        "observed_mismatch": "wrong_arg_value",
-        "failure_type": "wrong_boundary",
-        "failures": [
-          "response_type: expected 'yes_no', got 'text'"
-        ]
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
       },
       "tool_results": [
         {
           "tool": "clarify",
           "args": {
-            "response_type": "text",
-            "question": "Bạn muốn gửi tin nhắn gì qua Telegram cho team?"
+            "response_type": "yes_no",
+            "question": "Bạn có muốn gửi thông báo này qua Telegram channel cho team của mình không?",
+            "options": [
+              "Có",
+              "Không"
+            ]
           },
           "result": {
             "tool": "ask_user",
-            "question": "Bạn muốn gửi tin nhắn gì qua Telegram cho team?",
-            "response_type": "text",
-            "options": [],
+            "question": "Bạn có muốn gửi thông báo này qua Telegram channel cho team của mình không?",
+            "response_type": "yes_no",
+            "options": [
+              "Có",
+              "Không"
+            ],
             "awaiting_user": true
           }
         }
@@ -265,7 +273,7 @@
         "routing_correct": true,
         "args_correct": true,
         "actual_tool_calls": [],
-        "actual_text": "**Công thức làm Phở Bò Hà Nội chuẩn vị**\n\n> *Lưu ý:* Phở bò Hà Nội nổi tiếng với nước dùng trong, thanh mát, không dùng đường, chỉ dùng gia vị tự nhiên và các loại thảo mộc clean. Dưới đây là công thức chi tiết để bạn có thể tự tay làm tại nhà.\n\n---\n\n## 1. Nguyên liệu\n\n### A. Nguyên liệu chính\n| Thành phần | Số lượng (cho 4–5 bát) |\n|------------|------------------------|\n| **Xương bò** (xương ống, xương gân, xương sườn) | 2–2.5 kg |\n| **Thịt bò** (thịt gầu, gầu nạm, gầu gầu) | 500 g (cắt miếng 2–3 cm) |\n| **Bánh phở** (bánh phở sợi dẹt) | 500 g |\n| **Hành tím** | 2–3 củ (cắt múi tên) |\n| **Gừng** | 1 củ (cắt múi tên) |\n| **Hành lá** | 1 nắm (cắt nhỏ) |\n| **Rau thơm** (ngò gai, ngò rí, húng quế, bạc hà) | 1 nắm mỗi loại |\n| **Ớt** (tùy chọn) | 1–2 quả (cắt lát) |\n| **Mắm** (nước mắm) | 2–3 muỗng canh |\n| **Muối** | 1–2 muỗng canh (tùy khẩu vị) |\n| **Đường** | 1 muỗng cà phê (để cân bằng vị) |\n| **Bột ngọt** (tùy chọn) | ½ muỗng cà phê |\n\n### B. Gia vị\n| Gia vị | Lượng |\n|--------|-------|\n| **Hạt tiêu** (xay nhuyễn) | 1 muỗng cà phê |\n| **Quế** (cây quế) | 1‑2 thanh |\n| **Thảo quả** (đảo) | 2‑3 quả |\n| **Đinh hương** | 3‑4 quả |\n| **Gia vị nướng** (đổ vào nồi) | 1‑2 muỗng canh (có thể dùng hỗn hợp gia vị phở sẵn) |\n\n---\n\n## 2. Các bước thực hiện\n\n### Bước 1: Sơ chế xương & thịt\n1. **Rửa sạch xương** dưới vòi nước lạnh. Đun sôi một nồi nước, cho xương vào sôi 2‑3 phút rồi vớt ra rửa lại để loại bỏ bọt và bẩn bẩn trên mặt xương.  \n2. **Rửa lại gừng và hành tím** – bỏ vỏ, cắt múi tên (để giữ nguyên hình dáng).  \n3. **Rắc một chút muối lên thịt bò** và trộn đều, để 10‑15 phút, rồi rửa sạch lại để loại bỏ bột bẩn.\n\n### Bước 2: Nấu nước dùng\n1. **Cho xương vào nồi** (khoảng 4‑5 lít nước). Đun sôi rồi **làm sạch bọt** (đổ nước ra, rửa lại xương, sau đó cho xương vào nồi mới).  \n2. **Thêm gừng, hành tím** vào nồi, đun sôi rồi **đun ở lửa vừa** trong 3‑4 giờ. Khi nước dùng sôi sục, **giảm lửa** và để hầm đều.  \n3. **Thêm các loại gia vị** (quế, thảo quả, đinh hương, tiêu) vào nồi. Đun liu riu trong 30‑45 phút nữa.  \n4. **Lọc nước dùng** qua rây mịn để loại bỏ bọt, gia vị và các tạp chất. Nước dùng cuối cùng nên trong, trong suốt, có màu vàng nhạt.\n\n### Bước 3: Nêm nếm nước dùng\n1. **Thêm muối, đường, mắm** vào nước dùng, nếm thử và điều chỉnh cho vừa ăn (thường là 1‑1.5 muỗng canh muối, 1‑2 muỗng canh mắm, 1 muỗng cà phê đường).  \n2. **Nếu muốn nước dùng đậm hơn**, có thể thêm một chút nước mắm hoặc một ít bột ngọt (tuy nhiên không nên dùng quá nhiều để không làm mất hương tự nhiên).\n\n### Bước 4: Sơ chế bánh phở & rau thơm\n1. **Ngâm bánh phở** trong nước lạnh khoảng 15‑20 phút cho mềm, sau đó vớt ra để ráo.  \n2. **Chuẩn bị rau thơm**: ngò gai, ngò rí, húng quế, bạc hà rửa sạch, để ráo.  \n3. **Cắt sẵn ớt, hành lá** để dùng làm topping.\n\n### Bước 5: Luộc bánh phở\n1. **Đun sôi một nồi nước** (có thể cho một chút muối).  \n2. **Cho bánh phở vào** và luộc khoảng 30‑45 giây (tùy độ dẻo mong muốn).  \n3. **Vớt bánh ra** và rửa nhanh bằng nước lạnh để bánh không dính nhau. Để ráo.\n\n### Bước 6: Lắp bát phở\n1. **Cho bánh phở** vào bát.  \n2. **Thêm thịt bò** (đã cắt sẵn) lên trên bánh.  \n3. **Rưới nước dùng** nóng hổi lên bánh và thịt. Khi nước chạm vào thịt, thịt sẽ chín ngay nhanh.  \n4. **Rắc hành lá, ớt, rau thơm** lên trên.  \n5. **Dùng bát** để thưởng thức kèm **tương ớt**, **tương ớt tỏi**, **chanh** và **đậu phộng rang** (nếu thích).\n\n---\n\n## 3. Một số mẹo để “chuẩn vị” như Phở Bò Hà Nội\n\n| Mẹo | Giải thích |\n|-----|------------|\n| **Nước dùng trong** | Đun ở lửa nhỏ, không để sôi mạnh để tránh làm nước dùng “bốc khói”. |\n| **Không dùng đường** | Phở truyền thống không dùng đường; chỉ dùng một chút để cân bằng vị. |\n| **Gia vị nướng** | Hạt tiêu, quế, thảo quả, đinh hương nên được rang nhẹ trước khi cho vào nồi để tạo hương thơm đậm đà. |\n| **Rau thơm tươi** | Luôn dùng rau thơm tươi, không để lâu để giữ trọn hương vị. |\n| **Thịt bò vừa chín** | Khi rưới nước dùng lên, thịt chỉ cần “chín tới” (khoảng 30‑45 giây) – không nên luộc lâu để tránh thịt cứng. |\n| **Bánh phở sợi dẹt** | Bánh phở nên được mua ở nơi bán sẵn, không nên dùng bánh gạo cứng để tránh bánh bị dính. |\n\n---\n\n### Kết luận\nVới các bước trên, bạn sẽ có một bát **phở bò Hà Nội** “chuẩn vị” – nước dùng trong, thơm ngon, thịt bò mềm, bánh phở dẻo và đầy đủ các loại rau thơm tươi. Chúc bạn thành công và có một bữa ăn ngon miệng! \n\n*Nếu có câu hỏi nào thêm về chi tiết công thức hoặc muốn biết cách bảo quản nguyên liệu, cứ thoải mái hỏi mình nhé.*",
+        "actual_text": "**Công thức làm Phở Bò Hà Nội chuẩn vị**\n\n---\n\n### 1. Nguyên liệu\n\n#### A. Phần xương & thịt\n- **Xương bò** (xương ống, xương gân) – 2 kg  \n- **Thịt bò** (thịt gầu, gầu nạm) – 500 g (cắt miếng vừa vừa)  \n- **Thịt bò tái** (tái, gầu lẫn) – 300 g (cắt lát mỏng)  \n\n#### B. Hầm xương (nước dùng)\n- **Hành tây** – 1 củ (đốt cháy)  \n- **Gừng** – 1 củ (đốt cháy)  \n- **Hành tím** – 2 củ (đập dập)  \n- **Xương bò** – 2 kg (đã sơ chế)  \n- **Nước lọc** – 4–5 lít  \n\n#### C. G przyp (gia vị)\n- **Bột ngọt** (tùy chọn) – 1‑2 muỗng cà phê  \n- **Muối** – vừa đủ  \n- **Nước mắm** – 2‑3 muỗng canh (tùy khẩu vị)  \n\n#### D. Hương vị & gia vị\n- **Bintang hoa** – 4‑5 quả  \n- **Quế** – 1‑2 thanh (đập dập)  \n- **Đinh hương** – 4‑5 quả  \n- **Thảo quả** – 2‑3 quả  \n- **Hạt tiêu** – 1‑2 thìa cà phê (đập dập)  \n- **Rau thơm**: hành lá, ngò gai, rau mùi, rau thơm (tươi)  \n- **Ớt** – 1‑2 quả (cắt lát, tùy thích)  \n- **Chanh** – 1 quả (cắt lát)  \n\n#### E. Bánh phở & các loại\n- **Bánh phở** – 500 g (đã ngâm nước)  \n- **Giá đỗ** – 200 g (rửa sạch)  \n- **Bạc hà** – 1 nắm (rửa sạch)  \n- **Dưa leo** – 1 quả (cắt lát)  \n\n---\n\n### 2. Các bước thực hiện\n\n#### Bước 1: Sơ chế xương & hầm nước dùng\n1. **Rửa sạch xương** và để vào nồi lớn, đổ nước lạnh ngập. Đun sôi, **làm sạch bọt** (làm sạch bọt giúp nước dùng trong suốt).  \n2. Đổ bỏ nước sôi, **rửa lại xương** cho sạch. Đổ lại nước sạch mới, cho xương vào nồi, **đun sôi** rồi **làm sạch bọt** lần nữa.  \n3. Khi nước sôi, **thêm hành tây, gừng, hành tím** đã đốt cháy (đốt cho có màu nâu đen) và **gia vị** (bintang hoa, quế, đinh hương, thảo quả, tiêu).  \n4. **Đun liu riu** trong 6‑8 giờ (hoặc dùng nồi áp suất 2‑3 tiếng) cho xương ngấm hương. Khi hầm xong, **lọc sạch** nước dùng, bỏ bọt và các nguyên liệu sólid.  \n\n#### Bước 2: Nêm nếm nước dùng\n1. **Nêm muối, nước mắm** và **bột ngọt** (nếu dùng) cho vừa ăn. Nếm thử, điều chỉnh cho **hương vị đậm đà, ngọt tự nhiên, không mặn quá**.  \n2. **Giữ ấm** nước dùng trên lửa nhỏ.\n\n#### Bước 3: Sơ chế thịt & chuẩn bị bánh phở\n1. **Thịt bò tái** cắt lát mỏng (khoảng 0,2 mm) để khi ăn chín nhanh trong bát nóng.  \n2. **Bánh phở** để **ngâm nước** trong 30 giây – 1 phút cho mềm, sau đó vớt ra để để ráo.  \n\n#### Bước 4: Lắp bát phở\n1. **Cho bánh phở** vào bát, sau đó **đặt thịt bò tái** lên trên (thịt sẽ chín ngay khi nước dùng đang sôi).  \n3. **Rưới nước dùng** vào bát sao cho ngập bánh và thịt.  \n4. **Thêm các nguyên liệu**: giá đỗ, hành lá cắt nhỏ, rau mùi, rau thơm, bạc hà, dưa leo, ớt, chanh.  \n5. **Kèm kèm**: có thể cho thêm **hạt tiêu** và **nước mắm** lên trên nếu 원 원 원 muốn.\n\n#### Bước 5: Thưởng thức\n- Ăn ngay khi còn **bốc hơi** để cảm nhận trọn hương vị của nước dùng, vị ngọt tự nhiên của xương, và hương vị tươi của rau thơm.  \n\n---\n\n### 3. Một số lưu ý “chuẩn vị Hà Nội”\n\n1. **Nước dùng trong suốt, trong veo** – không màu tối, không đục.  \n2. **Hương vị đậm đà nhưng không mặn** – dùng nước mắm và muối vừa phải, bột ngọt chỉ là “bổ sung”.  \n3. **Thịt tái** phải cắt mỏng đủ để chín ngay trong bát nóng, giữ được độ mềm và độ ngọt tự nhiên.  \n4. **Rau thơm tươi** – không để lâu, để giữ hương thơm tươi.  \n5. **Không cho đường** vào nước dùng; nếu muốn vị ngọt tự nhiên, có thể dùng **xương ống** và **xương gân** giàu gelatin, tạo cảm giác “ngọt” khi hầm lâu.  \n\n---\n\n**Chúc bạn thành công và có một bát phở bò Hà Nội “chuẩn vị” ngon miệng!** 🍜",
         "case_failure_type": "out_of_scope",
         "observed_mismatch": null,
         "failure_type": null,
@@ -302,8 +310,8 @@
             "name": "papers",
             "args": {
               "max_results": 1,
-              "query": "Retrieval-Augmented Generation",
-              "sort_by": "lastUpdatedDate"
+              "sort_by": "lastUpdatedDate",
+              "query": "Retrieval-Augmented Generation"
             }
           }
         ],
@@ -318,8 +326,8 @@
           "tool": "papers",
           "args": {
             "max_results": 1,
-            "query": "Retrieval-Augmented Generation",
-            "sort_by": "lastUpdatedDate"
+            "sort_by": "lastUpdatedDate",
+            "query": "Retrieval-Augmented Generation"
           },
           "result": {
             "tool": "arxiv_search",
@@ -392,8 +400,9 @@
           {
             "name": "github_search",
             "args": {
-              "query": "RAG",
-              "language": "TypeScript"
+              "language": "TypeScript",
+              "limit": 5,
+              "query": "RAG"
             }
           }
         ],
@@ -407,8 +416,9 @@
         {
           "tool": "github_search",
           "args": {
-            "query": "RAG",
-            "language": "TypeScript"
+            "language": "TypeScript",
+            "limit": 5,
+            "query": "RAG"
           },
           "result": {
             "tool": "github_search",
@@ -421,7 +431,7 @@
                 "url": "https://github.com/langgenius/dify",
                 "source": "github.com",
                 "summary": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
-                "stars": 150618,
+                "stars": 150677,
                 "language": "TypeScript"
               },
               {
@@ -429,7 +439,7 @@
                 "url": "https://github.com/ruvnet/ruflo",
                 "source": "github.com",
                 "summary": "🌊 The leading agent meta-harness. Deploy intelligent multi-player swarms, coordinate autonomous workflows, and build conversational AI systems. Features adaptive memory, self-learning intelligence, RAG integration, and native Claude Code / Codex / Hermes and many more Integrated",
-                "stars": 66423,
+                "stars": 66447,
                 "language": "TypeScript"
               },
               {
@@ -437,7 +447,7 @@
                 "url": "https://github.com/mem0ai/mem0",
                 "source": "github.com",
                 "summary": "Universal memory layer for AI Agents",
-                "stars": 61968,
+                "stars": 61995,
                 "language": "TypeScript"
               },
               {
@@ -445,7 +455,7 @@
                 "url": "https://github.com/FlowiseAI/Flowise",
                 "source": "github.com",
                 "summary": "Build AI Agents, Visually",
-                "stars": 55006,
+                "stars": 55010,
                 "language": "TypeScript"
               },
               {
@@ -453,7 +463,7 @@
                 "url": "https://github.com/abhigyanpatwari/GitNexus",
                 "source": "github.com",
                 "summary": "GitNexus: The Zero-Server Code Intelligence Engine -       GitNexus is a client-side knowledge graph creator that runs entirely in your browser. Drop in a git repository (Github, Gitlab, Azure, Local) or ZIP file, and get an interactive knowledge graph with a built in Graph RAG Agent. Perfect for code exploration",
-                "stars": 44764,
+                "stars": 44778,
                 "language": "TypeScript"
               }
             ]
@@ -503,8 +513,8 @@
           {
             "name": "timeline",
             "args": {
-              "limit": 5,
-              "screenname": "karpathy"
+              "screenname": "karpathy",
+              "limit": 5
             }
           }
         ],
@@ -518,8 +528,8 @@
         {
           "tool": "timeline",
           "args": {
-            "limit": 5,
-            "screenname": "karpathy"
+            "screenname": "karpathy",
+            "limit": 5
           },
           "result": {
             "tool": "get_user_tweets",
@@ -532,9 +542,9 @@
                 "source": "@karpathy",
                 "date": "Tue Jul 21 16:53:55 +0000 2026",
                 "metrics": {
-                  "favorites": 48637,
-                  "retweets": 4061,
-                  "views": "3897585"
+                  "favorites": 48658,
+                  "retweets": 4065,
+                  "views": "3901300"
                 }
               },
               {
@@ -617,7 +627,7 @@
         "routing_correct": true,
         "args_correct": true,
         "actual_tool_calls": [],
-        "actual_text": "Vâng, đã hủy bỏ hành động đăng tin tức AI lên Telegram. Nếu bạn cần thực hiện điều gì khác, hãy cho mình biết nhé.",
+        "actual_text": "Vâng, đã hủy yêu cầu đăng tin tức AI lên Telegram. Nếu có việc gì khác cần hỗ trợ, bạn cứ cho mình biết nhé.",
         "case_failure_type": "unnecessary_tool",
         "observed_mismatch": null,
         "failure_type": null,
@@ -668,10 +678,10 @@
           {
             "name": "lookup",
             "args": {
-              "query": "xe điện EV",
-              "timeframe": "day",
               "topic": "news",
-              "max_results": 5
+              "timeframe": "day",
+              "max_results": 5,
+              "query": "xe điện EV"
             }
           }
         ],
@@ -687,10 +697,10 @@
         {
           "tool": "lookup",
           "args": {
-            "query": "xe điện EV",
-            "timeframe": "day",
             "topic": "news",
-            "max_results": 5
+            "timeframe": "day",
+            "max_results": 5,
+            "query": "xe điện EV"
           },
           "result": {
             "tool": "web_search",
@@ -699,39 +709,39 @@
             "timeframe": "day",
             "items": [
               {
-                "title": "India’s capital part of aggressive electric vehicle targets in bid to curb air pollution - AP News",
-                "url": "https://apnews.com/article/ev-delhi-india-climate-renewable-pollution-046240018d61185c470353df2fe9d8ae",
-                "source": "apnews.com",
-                "summary": "Delivery workers and drivers arrive at a battery-swapping station for electric vehicles in New Delhi, India, Monday, July 13, 2026. A person swaps their electric scooter battery at a battery-swapping station for electric vehicles in New Delhi, India, Monday, July 13, 2026. ## Delhi uses a bold approach to mainstream EVs. A person swaps their electric scooter battery at a battery-swapping station for electric vehicles in New Delhi, India, Monday, July 13, 2026. India’s capital city is in dire need of more charging facilities, EV drivers say, to implement an ambitious plan to phase out gas vehicles in one of the world’s most polluted cities. “Delhi’s EV policy is one of the most ambitious policies that I have seen in India,” said Jaideep Saraswat, who leads work on clean power and electric mobility at the Vasudha Foundation. Vehicles cause about a quarter of air pollution in the National Capital Region surrounding Delhi, and two- and three-wheelers are responsible for nearly half of vehicular pollution in the city.",
-                "score": 0.25749236
+                "title": "'Tôi từng có ý định quay lại xe xăng, nhưng xe điện đã quá chiều tôi' - Tuổi Trẻ Online",
+                "url": "https://tuoitre.vn/toi-tung-co-y-dinh-quay-lai-xe-xang-nhung-xe-dien-da-qua-chieu-toi-100260728164642081.htm",
+                "source": "tuoitre.vn",
+                "summary": "Chevrolet Blazer EV cũ là lựa chọn phù hợp nhất với Mack Hogan. Dù vậy, theo anh, còn rất nhiều xe điện khác có thể xem xét như Hyundai Ioniq 5, Tesla Model Y, Ford Mustang Mach-E... - Ảnh: Mack Hogan/InsideEVs\n\nTheo Hogan, Blazer EV đáp ứng tốt nhu cầu thường xuyên đi đường rừng nhờ khoảng sáng gầm khoảng 203mm, chế độ lái một bàn đạp và khả năng vận hành êm ái trên đường dài. [...] Ngay cả những mẫu xe được đánh giá bền bỉ vẫn phải thực hiện nhiều hạng mục bảo dưỡng định kỳ như thay bugi, dầu hộp số cùng hàng loạt chi tiết cơ khí có thể xuống cấp theo thời gian.\n\nTrong khi đó, chiếc xe điện Chevrolet Blazer EV anh sử dụng suốt hai năm chỉ cần đảo lốp định kỳ. Hệ thống phanh gần như không mòn nhờ thường xuyên sử dụng phanh tái tạo năng lượng, còn pin và hệ truyền động hoạt động ổn định. [...] Sau hai năm sử dụng xe điện Chevrolet Blazer EV theo hình thức thuê xe, cây bút chuyên về ô tô Mack Hogan của InsideEVs cho biết anh từng có ý định quay lại sử dụng ô tô chạy xăng.\n\nNguyên nhân là ngân sách dành cho chiếc xe tiếp theo chỉ khoảng 10.000 USD (263,3 triệu đồng), mức giá khiến hầu hết các mẫu xe điện hiện đại có phạm vi hoạt động dài đều nằm ngoài tầm với. Lựa chọn khi đó chỉ còn SUV chạy xăng dẫn động bốn bánh, hoặc xe điện Chevrolet Bolt đã qua sử dụng.",
+                "score": 0.63777614
               },
               {
-                "title": "India's capital part of aggressive electric vehicle targets in bid to curb air pollution - Greenwich Time",
-                "url": "https://www.greenwichtime.com/news/world/article/india-s-capital-part-of-aggressive-electric-22364571.php",
-                "source": "greenwichtime.com",
-                "summary": "# India's capital part of aggressive electric vehicle targets in bid to curb air pollution. NEW DELHI (AP) — In an affluent neighborhood in Delhi, electric vehicle charging stations near a popular shopping area were busy with drivers powering up their scooters, trucks and cars. India's capital city is in dire need of more charging facilities, EV drivers say, to implement an ambitious plan to phase out gas vehicles in one of the world’s most polluted cities. “Charging facilities are not up to the mark yet,” said Shyam Singh, a marketing executive who owns a two-wheel electric scooter, adding that it is hard for long-distance drivers to switch to EVs because the current battery range is not enough. ## Delhi uses a bold approach to mainstream EVs. Delhi adopted a new policy on July 1 that aims to make the vast majority of newly registered vehicles electric by 2027.",
-                "score": 0.23656955
+                "title": "Thêm nhiều tên tuổi lớn có kế hoạch đưa ô tô điện vào Việt Nam - Báo Tuyên Quang điện tử",
+                "url": "https://baotuyenquang.com.vn/khoa-hoc-cong-nghe/202607/them-nhieu-ten-tuoi-lon-co-ke-hoach-dua-o-to-dien-vao-viet-nam-cfe25f9",
+                "source": "baotuyenquang.com.vn",
+                "summary": "Khi được phn phối chính thức, Kona EV sẽ là mẫu xe điện chủ lực của Hyundai tại Việt Nam trong vài năm tới. Điều này rất quan trọng trong bối cảnh mẫu IONIQ 5 từng ra mắt đình đám nhưng vì nhiều lý do đã không mấy thành công. Việc ra mắt xe điện tại Việt Nam cũng là bước đi phù hợp với chiến lược điện hóa toàn cầu của Hyundai.\n\n|\n|  |\n| Thông số mẫu xe điện Omoda O4 vừa trình làng thị trường khu vực trong sự kiện tại Indonesia. Ảnh: PV | [...] Ở phn khúc phổ thông, Hyundai cũng chuẩn bị cho kế hoạch điện hóa mạnh mẽ, với kế hoạch đưa xe điện Kona EV thế hệ mới về thị trường Việt Nam. Trước đy, Kona mày xăng từng là một trong những mẫu SUV đô thị bán chạy nhất của Hyundai trước khi được thay thế bởi Creta. [...] Về phần mình, Omoda&Jaecoo trong ngày 27-7 cũng giới thiệu mẫu xe điện Omoda O4 mới, dự kiến sẽ lắp ráp tại nhà máy Việt Nam từ đầu năm 2027. Xe có pin LFP 65 kWh, cho khả năng di chuyển 553 km/lần sạc. Đy sẽ là mẫu xe thuần điện thứ hai hãng Trung Quốc muốn lắp ở Việt Nam, sau J5 BEV đang rục rịch hoàn thiện.",
+                "score": 0.6246834
               },
               {
-                "title": "Awesome New Buick EV — Electra L7! - CleanTechnica",
-                "url": "https://cleantechnica.com/2026/07/28/awesome-new-buick-ev-electra-l7/",
-                "source": "cleantechnica.com",
-                "summary": "Buick is coming out with an awesome new electric vehicle, the Electra 7. Naturally, this is built on an 800-volt high-voltage platform, and Buick claims that it is the “safest in the industry.” We don’t know how that was measured or if it’s just a broad claim that the company hopes is true. We don’t know pricing yet, but by this point, you probably know a key matter here: the Buick Electra L7 is going on sale in China, not the US of A. It’s easy from afar to think “Oh, I’d get that one, and that one, and that one…,” but you have to eventually make a single choice, and I don’t know how I’d do it. *Sign up for CleanTechnica's Weekly Substack for Zach and Scott's in-depth analyses and high level summaries, sign up for our daily newsletter, and follow us on Google News!*. Or sign up for our weekly one on top stories of the week if daily is too frequent.*.",
-                "score": 0.22431062
+                "title": "Mẫu xe điện nhỏ tầm hoạt động 300km, nhiều công nghệ an toàn kèm bảo hành pin trọn đời, giá dự kiến chỉ 233 triệu đồng",
+                "url": "https://nguoiquansat.vn/mau-xe-dien-nho-tam-hoat-dong-300km-nhieu-cong-nghe-an-toan-kem-bao-hanh-pin-tron-doi-gia-du-kien-chi-233-trieu-dong-306998.html",
+                "source": "nguoiquansat.vn",
+                "summary": "Wuling Aira EV vừa mở nhận cọc tại Đông Nam Á với mức giá đồn đoán khoảng 233 triệu đồng.",
+                "score": 0.57293844
               },
               {
-                "title": "Rivian R1T Ranked Least Reliable EV Pickup by Consumer Reports - Torque News",
-                "url": "https://www.torquenews.com/1083/rivian-r1t-ranked-least-reliable-ev-pickup-consumer-reports",
-                "source": "torquenews.com",
-                "summary": "We scoured the data on new EV pickups so you don’t have to. According to Consumer Reports’ data, the least reliable EV pickup is the one that’s been on the market the longest, the Rivian R1T. Electric vehicles have proven to be the least reliable of all powertrain types according to Consumer Reports. Among the worst EVs for reliability are EV pickup trucks. We dug deeply into our Consumer Reports online subscription to see which of the new EV trucks on sale in 2026 were ranked least reliable by Consumer Reports. According to Consumer Reports data, the Rivian R1T has never broken out of the teens in its reliability score. It’s hard to even find vehicles that score that low for reliability in the CR data. The Silverado scores in the low 30/100 range for Predicted Reliability by Consumer Reports. The Cybertruck scores a smidge above the Silverado EV, but is still in the low 30/100 range for 2026 model year Predicted Reliability.",
-                "score": 0.20377128
+                "title": "Wuling Mini EV của TMT Motors: Vì sao kỳ vọng 'bom tấn' thành 'bom xịt'?",
+                "url": "https://www.dnse.com.vn/senses/tin-tuc/wuling-mini-ev-cua-tmt-motors-vi-sao-ky-vong-bom-tan-thanh-bom-xit-35252427",
+                "source": "dnse.com.vn",
+                "summary": "Từ kỳ vọng đến thất vọng. Chính thức mở bán tại thị trường Việt Nam vào giữa tháng 6/2023, mẫu xe điện mini Wuling Mini EV (tên gọi cũ Wuling Hongguang Mini",
+                "score": 0.4352539
               },
               {
-                "title": "BYD goes live with debut kei EV, Japan subsidy wall remains - Automotive World",
-                "url": "https://www.automotiveworld.com/news/byd-goes-live-with-debut-kei-ev-japan-subsidy-wall-remains/",
-                "source": "automotiveworld.com",
-                "summary": "BYD goes live with debut kei EV, Japan subsidy wall remains Freenow and Baidu put RT6 robotaxis on London roads BMW iX3 output hits 50,000 as Neue Klasse scales up Here hazard alerts qualify for Euro NCAP safety points Stellantis exits car-sharing with Free2move sale deal Škoda Elroq gets Continental EcoContact 7 as standard fit Stoneridge wins US$42.3m bus and coach MirrorEye deal Dunlop Tyre Europe joins TyreSafe at top membership tier Toyota-backed US$9m city mobility challenge names winners Porsche trades extra 5,000 job cuts for 2035 site guarantees. Home › News › BYD goes live with debut kei EV, Japan subsidy wall remains. # BYD goes live with debut kei EV, Japan subsidy wall remains. BYD launched the Racco in Japan on 28 July, its first passenger vehicle ever engineered specifically for a single overseas market, entering the country’s kei-car segment with pricing from JP¥2.15m (US$13,000) and a range of 320km.",
-                "score": 0.20046411
+                "title": "Tương lai tươi sáng cho trạm sạc xe điện tại việt nam 2026 - Tuổi Trẻ Online",
+                "url": "https://tuoitre.vn/tram-sac-tang-toc-nguoi-mua-xe-dien-bot-lo-100260728153555576.htm",
+                "source": "tuoitre.vn",
+                "summary": "BYD chọn bắt tay Futa EV Power để cùng phát triển trạm sạc, công nghệ pin và lưu trữ năng lượng. Charge+ hợp tác Porsche xây dựng 17 trạm sạc nhanh trên hành lang khoảng 1.700km.\n\nTrong khi đó, ứng dụng VETC thuộc hệ sinh thái của Tasco, lại gom nhiều nhà vận hành lên một nền tảng.\n\nSau hơn một tháng triển khai, đơn vị này cho biết đã kết nối hơn 350 trụ, khoảng 50% mạng sạc ô tô đa thương hiệu. Người dùng có thể tìm trạm, kích hoạt phiên sạc và thanh toán trên cùng ứng dụng. [...] Ghi nhận củaTuổi Trẻ trên một số ứng dụng cho thấy mạng sạc đa thương hiệu đã xuất hiện tại nhiều địa phương nhưng khả năng phục vụ chưa đồng đều.\n\nCó thời điểm TMT EGreen chỉ hiển thị hai trạm tại TP.HCM, các súng sạc đều không khả dụng. Futa EV có nhiều điểm hơn nhưng một số trụ báo \"đang bận\", số khác \"mất kết nối\". VETC hiển thị mạng lưới dày hơn nhờ kết nối nhiều nhà vận hành.\n\n#### Điện mặt trời mái nhà được bán trực tiếp cho trạm sạc xe điện, trung tâm dữ liệu [...] #### Futa EV Power và BYD Auto Việt Nam phát triển hạ tầng sạc xe điện\n\nTuy nhiên, giá sạc điện mỗi thương hiệu chênh lệch đáng kể. TMT Egreen áp dụng mức giá 3.651 đồng/kWh vào giờ thấp điểm, 4.984 đồng/kWh trong giờ bình thường và 7.436 đồng/kWh vào giờ cao điểm, đã bao gồm thuế, từ ngày 15-7.\n\nCác hệ thống khác cũng có mức giá riêng. Bitcharge tại các đại lý BYD Bitcar áp dụng giá 4.212 - 6.048 đồng/kWh tùy khung giờ.\n\nCòn Esky niêm yết khoảng 7.000 đồng/kWh; V-Green giữ mức 3.858 đồng/kWh.",
+                "score": 0.30650678
               }
             ]
           }

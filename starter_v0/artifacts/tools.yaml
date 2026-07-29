@@ -2,26 +2,26 @@
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng. Dùng response_type='text' khi thiếu thông tin bắt buộc (như Twitter handle hoặc URL). Dùng response_type='yes_no' để xin xác nhận trước khi thực hiện các hành động gửi hoặc đăng nội dung ra bên ngoài."
+    description: "Gửi một câu hỏi cho người dùng. Dùng response_type='yes_no' trước mọi yêu cầu gửi, đăng hoặc xuất bản ra bên ngoài, kể cả khi nội dung còn thiếu. Với các yêu cầu không có side effect, dùng response_type='text' khi thiếu thông tin bắt buộc như Twitter handle hoặc URL."
     parameters:
       type: object
       properties:
         question: {type: string, default: "", description: "Câu hỏi"}
         response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời"}
         options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn"}
-      required: [question]
+      required: [question, response_type]
 
   - name: timeline
-    description: "Lấy các bài đăng gần đây của một tài khoản Twitter bằng screenname chuẩn (Sam Altman -> sama, Elon Musk -> elonmusk, Andrej Karpathy -> karpathy)."
+    description: "Lấy các bài đăng gần đây của một tài khoản Twitter. screenname là canonical handle, không phải display name hay handle tự suy diễn; phải sao chép đúng mapping đã biết."
     parameters:
       type: object
       properties:
-        screenname: {type: string, default: "", description: "Tên tài khoản Twitter (screenname)"}
+        screenname: {type: string, default: "", description: "Canonical handle không có @: Sam Altman=sama, Elon Musk=elonmusk, Andrej Karpathy=karpathy. Dùng chính xác các giá trị này khi tên tương ứng xuất hiện."}
         limit: {type: integer, default: 5, description: "Số lượng tweet"}
       required: [screenname]
 
   - name: social_search
-    description: "Tìm bài đăng theo chủ đề trên mạng xã hội Twitter/X."
+    description: "Tìm bài đăng theo chủ đề trên mạng xã hội Twitter/X. Vẫn phải gọi tool này trong cùng lượt với các tool nguồn khác khi người dùng yêu cầu cả thảo luận xã hội và nguồn web, tin tức hoặc nghiên cứu."
     parameters:
       type: object
       properties:
@@ -31,7 +31,7 @@ tools:
       required: [query]
 
   - name: lookup
-    description: "Tra cứu thông tin trên web. Khi tìm tin tức (news), gán topic='news', lọc query chỉ giữ từ khóa chính (không chứa từ 'news'/'hôm nay'), và gán timeframe='day' cho hôm nay hoặc timeframe='week' cho tuần này."
+    description: "Tra cứu thông tin trên web. Khi tìm tin tức (news), gán topic='news', lọc query chỉ giữ từ khóa chính (không chứa từ 'news'/'hôm nay'), và gán timeframe='day' cho hôm nay hoặc timeframe='week' cho tuần này. Nếu cùng yêu cầu còn đòi hỏi bài đăng hoặc thảo luận mạng xã hội, gọi thêm social_search trong chính lượt đó."
     parameters:
       type: object
       properties:
@@ -39,7 +39,7 @@ tools:
         topic: {type: string, enum: [general, news], default: "general", description: "Phân loại (news cho tin tức)"}
         timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian (day=hôm nay, week=tuần này)"}
         max_results: {type: integer, default: 5, description: "Số kết quả"}
-      required: [query]
+      required: [query, topic, timeframe]
 
   - name: fetch
     description: "Lấy nội dung từ một địa chỉ URL cụ thể."
@@ -48,27 +48,6 @@ tools:
       properties:
         url: {type: string, default: "", description: "Địa chỉ URL"}
       required: [url]
-
-  - name: format
-    description: "Trình bày dữ liệu đã có thành văn bản."
-    parameters:
-      type: object
-      properties:
-        items:
-          type: array
-          default: []
-          description: "Danh sách item"
-          items:
-            type: object
-            properties:
-              title: {type: string}
-              url: {type: string}
-              source: {type: string}
-              summary: {type: string}
-              section: {type: string}
-        template: {type: string, enum: [brief, sections, bullets, thread, daily_ai_vn], default: "sections", description: "Khuôn"}
-        headline: {type: string, default: "", description: "Tiêu đề"}
-      required: [items, template]
 
   # ---------------- Custom tools ----------------
   - name: github_search
@@ -82,26 +61,7 @@ tools:
         limit: {type: integer, default: 5, description: "Số kết quả tối đa"}
       required: [query]
 
-  # ---------------- Bonus tools ----------------
-  - name: send
-    description: "Gửi một đoạn văn bản đi."
-    parameters:
-      type: object
-      properties:
-        text: {type: string, default: "", description: "Nội dung"}
-        confirmed: {type: boolean, default: false, description: "Cờ xác nhận"}
-      required: [text]
-
-  - name: policy
-    description: "Tìm trong tài liệu nội bộ."
-    parameters:
-      type: object
-      properties:
-        query: {type: string, default: "", description: "Truy vấn"}
-        policy_area: {type: string, enum: [all, ai_research, source_citation, data_privacy, external_publishing, tool_usage], default: "all", description: "Nhóm"}
-        top_k: {type: integer, default: 3, description: "Số mục"}
-      required: [query]
-
+  # ---------------- Extension tool used by team eval ----------------
   - name: papers
     description: "Tìm bài báo khoa học."
     parameters:
@@ -111,13 +71,3 @@ tools:
         max_results: {type: integer, default: 5, description: "Số lượng"}
         sort_by: {type: string, enum: [relevance, lastUpdatedDate, submittedDate], default: "relevance", description: "Sắp xếp"}
       required: [query]
-
-  - name: paper_text
-    description: "Lấy nội dung text của một bài báo."
-    parameters:
-      type: object
-      properties:
-        arxiv_url: {type: string, default: "", description: "ID hoặc địa chỉ"}
-        max_pages: {type: integer, default: 5, description: "Số trang"}
-        max_chars: {type: integer, default: 8000, description: "Số ký tự"}
-      required: [arxiv_url]
