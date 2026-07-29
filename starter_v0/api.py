@@ -57,7 +57,7 @@ class ChatRequest(BaseModel):
     message: str = Field(min_length=1)
     provider: Literal["openrouter", "openai", "anthropic", "gemini", "nvidia", "nim"] = "nvidia"
     model: str | None = None
-    version: str = "v3"
+    version: str = "v0"
     history: list[ChatMessage] = Field(default_factory=list)
     history_window: int = 5
     max_tool_rounds: int = 4
@@ -174,7 +174,7 @@ def evidence() -> dict[str, Any]:
         "transcripts": transcript_summaries(),
         "defaults": {
             "provider": "nvidia",
-            "version": "v3",
+            "version": "v0",
             "max_tool_rounds": 4,
         },
     }
