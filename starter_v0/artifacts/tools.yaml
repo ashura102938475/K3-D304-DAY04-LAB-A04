@@ -1,15 +1,8 @@
-# starter_v0 — tool declarations (intentionally vague).
-# Names and descriptions here are a rough first draft. Routing rules, name->handle
-# mapping, arg conventions (news/timeframe/Top), and the send-confirmation boundary
-# are NOT spelled out anywhere yet. Your job is to make these declarations + the
-# system prompt good enough that the agent routes correctly on the eval.
-#
-# If you rename a tool, keep the name in sync across:
-#   this file  ->  tools/__init__.py (TOOL_FUNCTIONS)  ->  data/eval_base.json + data/eval_research_extension.json
+# starter_v0 — tool declarations with clear routing rules.
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: "Gửi một câu hỏi cho người dùng. Dùng response_type='text' khi thiếu thông tin bắt buộc (như Twitter handle hoặc URL). Dùng response_type='yes_no' để xin xác nhận trước khi thực hiện các hành động gửi hoặc đăng nội dung ra bên ngoài."
     parameters:
       type: object
       properties:
@@ -19,41 +12,41 @@ tools:
       required: [question]
 
   - name: timeline
-    description: "Lấy các bài đăng gần đây."
+    description: "Lấy các bài đăng gần đây của một tài khoản Twitter bằng screenname chuẩn (Sam Altman -> sama, Elon Musk -> elonmusk, Andrej Karpathy -> karpathy)."
     parameters:
       type: object
       properties:
-        screenname: {type: string, default: "", description: "Tên tài khoản"}
-        limit: {type: integer, default: 5, description: "Số lượng"}
+        screenname: {type: string, default: "", description: "Tên tài khoản Twitter (screenname)"}
+        limit: {type: integer, default: 5, description: "Số lượng tweet"}
       required: [screenname]
 
   - name: social_search
-    description: "Tìm trên mạng xã hội."
+    description: "Tìm bài đăng theo chủ đề trên mạng xã hội Twitter/X."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Từ khóa"}
-        search_type: {type: string, enum: [Latest, Top], default: "Latest", description: "Cách sắp xếp"}
+        query: {type: string, default: "", description: "Từ khóa tìm kiếm"}
+        search_type: {type: string, enum: [Latest, Top], default: "Latest", description: "Cách sắp xếp (Top cho phổ biến/top)"}
         limit: {type: integer, default: 5, description: "Số lượng"}
       required: [query]
 
   - name: lookup
-    description: "Tra cứu thông tin trên internet."
+    description: "Tra cứu thông tin trên web. Khi tìm tin tức (news), gán topic='news', lọc query chỉ giữ từ khóa chính (không chứa từ 'news'/'hôm nay'), và gán timeframe='day' cho hôm nay hoặc timeframe='week' cho tuần này."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Truy vấn"}
-        topic: {type: string, enum: [general, news], default: "general", description: "Phân loại"}
-        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian"}
+        query: {type: string, default: "", description: "Truy vấn từ khóa cốt lõi"}
+        topic: {type: string, enum: [general, news], default: "general", description: "Phân loại (news cho tin tức)"}
+        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian (day=hôm nay, week=tuần này)"}
         max_results: {type: integer, default: 5, description: "Số kết quả"}
       required: [query]
 
   - name: fetch
-    description: "Lấy nội dung từ một địa chỉ."
+    description: "Lấy nội dung từ một địa chỉ URL cụ thể."
     parameters:
       type: object
       properties:
-        url: {type: string, default: "", description: "Địa chỉ"}
+        url: {type: string, default: "", description: "Địa chỉ URL"}
       required: [url]
 
   - name: format
@@ -76,6 +69,18 @@ tools:
         template: {type: string, enum: [brief, sections, bullets, thread, daily_ai_vn], default: "sections", description: "Khuôn"}
         headline: {type: string, default: "", description: "Tiêu đề"}
       required: [items, template]
+
+  # ---------------- Custom tools ----------------
+  - name: github_search
+    description: "Tìm các kho lưu trữ mã nguồn mở (repository/projects/libraries) trên GitHub."
+    parameters:
+      type: object
+      properties:
+        query: {type: string, default: "", description: "Từ khóa tìm kiếm repo/mã nguồn"}
+        language: {type: string, default: "", description: "Ngôn ngữ lập trình (ví dụ: python, typescript)"}
+        sort: {type: string, enum: [stars, forks, updated], default: "stars", description: "Tiêu chí sắp xếp"}
+        limit: {type: integer, default: 5, description: "Số kết quả tối đa"}
+      required: [query]
 
   # ---------------- Bonus tools ----------------
   - name: send
