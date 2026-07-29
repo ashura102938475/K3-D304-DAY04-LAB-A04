@@ -1,4 +1,4 @@
-export type Status = "idle" | "loading" | "ready" | "error";
+export type Status = "idle" | "loading" | "ready" | "demo" | "error";
 
 export type ChatMessage = {
   role: "user" | "assistant" | "system";
@@ -106,14 +106,47 @@ export type ToolDeclaration = {
 };
 
 export type Evidence = {
+  source?: "api" | "mock";
   root: string;
   runs: RunSummary[];
   version_log: VersionLogRow[];
   tools: ToolDeclaration[];
-  transcripts: Array<Record<string, unknown>>;
+  transcripts: TranscriptSummary[];
   defaults: {
     provider: string;
     version: string;
     max_tool_rounds: number;
   };
+};
+
+export type TranscriptSummary = {
+  file: string;
+  path: string;
+  transcript_id?: string;
+  version?: string;
+  artifact_version?: string;
+  provider?: string;
+  model?: string;
+  created_at?: string;
+  updated_at?: string;
+  turn_count?: number;
+  last_user?: string | null;
+  last_status?: string | null;
+};
+
+export type TranscriptTurn = {
+  turn_index?: number;
+  started_at?: string;
+  ended_at?: string;
+  user?: string;
+  status?: string;
+  assistant_text?: string;
+  rounds?: ToolRound[];
+  tool_events?: ToolEvent[];
+};
+
+export type TranscriptDetail = TranscriptSummary & {
+  history_window?: number;
+  max_tool_rounds?: number;
+  turns?: TranscriptTurn[];
 };
