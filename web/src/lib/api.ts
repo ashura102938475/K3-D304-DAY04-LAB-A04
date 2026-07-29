@@ -1,12 +1,12 @@
-import type { ChatMessage, ChatResponse, Evidence, RunDetail } from "../types/agent";
+import type { ChatRequest, ChatResponse, Evidence, RunDetail } from "../types/agent";
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE}${path}`, {
     headers: {
       "Content-Type": "application/json",
-      ...(init?.headers ?? {})
+      ...(init?.headers || {})
     },
     ...init
   });
@@ -14,10 +14,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (!response.ok) {
     let detail = response.statusText;
     try {
-      const body = await response.json();
-      detail = body.detail ?? detail;
+      const data = await response.json();
+      detail = data.detail || detail;
     } catch {
-      // Keep the HTTP status text when the server did not return JSON.
+      // Keep the HTTP status text when the response is not JSON.
     }
     throw new Error(detail);
   }
@@ -25,34 +25,24 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-export function getEvidence() {
-  return request<Evidence>("/api/evidence");
+export function getEvidence(): Promise<Evidence> {
+  return requestJson<Evidence>("/api/evidence");
 }
 
-export function getRunDetail(filename: string) {
-  return request<RunDetail>(`/api/runs/${encodeURIComponent(filename)}`);
+export function getRunDetail(filename: string): Promise<RunDetail> {
+  return requestJson<RunDetail>(`/api/runs/${encodeURIComponent(filename)}`);
 }
 
-export function sendChat(input: {
-  message: string;
-  provider: string;
-  model?: string;
-  version: string;
-  history: ChatMessage[];
-  max_tool_rounds: number;
-}) {
-  return request<ChatResponse>("/api/chat", {
+export function sendChat(payload: ChatRequest): Promise<ChatResponse> {
+  return requestJson<ChatResponse>("/api/chat", {
     method: "POST",
-    body: JSON.stringify(input)
+    body: JSON.stringify(payload)
   });
 }
 
-export function formatPercent(value?: number) {
-  if (typeof value !== "number") return "--";
-  return `${Math.round(value * 100)}%`;
-}
-
-export function compactJson(value: unknown) {
-  if (value === undefined || value === null) return "";
+export function compactJson(value: unknown): string {
+  if (value === undefined || value === null) {
+    return "";
+  }
   return JSON.stringify(value, null, 2);
 }

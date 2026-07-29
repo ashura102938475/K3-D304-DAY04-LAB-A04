@@ -1,0 +1,30 @@
+{
+  "transcript_id": "v3_openrouter_20260729T121038974698",
+  "version": "v3",
+  "artifact_version": "v3+p57c0fffa0585+t320525988ccc",
+  "prompt_hash": "57c0fffa05857aa333d241e2e48b33bc6c7fcf8f2ab12c18931d928060a845b8",
+  "tools_hash": "320525988ccce3357649bfb85544c4c780700ee028aa8d0e7a83d2a24c76bebf",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "created_at": "2026-07-29T12:10:38",
+  "updated_at": "2026-07-29T12:10:38",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-07-29T12:10:38",
+      "user": "hi",
+      "ended_at": "2026-07-29T12:10:38",
+      "status": "answered",
+      "assistant_text": "Hello! How can I assist you today?",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Hello! How can I assist you today?",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": []
+    }
+  ]
+}

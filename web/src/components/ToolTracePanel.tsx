@@ -1,4 +1,4 @@
-import { CheckCircle2, ChevronRight, Wrench } from "lucide-react";
+import { CheckCircle2, ChevronRight, Database, Wrench } from "lucide-react";
 import { compactJson } from "../lib/api";
 import type { ToolEvent, ToolRound } from "../types/agent";
 
@@ -13,14 +13,14 @@ export function ToolTracePanel({ rounds = [], events = [] }: ToolTracePanelProps
     0
   );
   const traceLabel = callCount > 0
-    ? `${callCount} tool call(s) in the latest response`
+    ? `${callCount} tool call(s)`
     : rounds.length > 0
-      ? "Direct answer · no tools used"
-      : "No response selected";
+      ? "Direct answer"
+      : "Waiting for a response";
 
   return (
     <section className="panel trace-panel">
-      <div className="panel-heading">
+      <div className="panel-heading compact-heading">
         <div>
           <h2>Tool trace</h2>
           <p>{traceLabel}</p>
@@ -29,7 +29,11 @@ export function ToolTracePanel({ rounds = [], events = [] }: ToolTracePanelProps
       </div>
 
       {rounds.length === 0 && events.length === 0 ? (
-        <div className="empty-state">Send a request to inspect its tool activity.</div>
+        <div className="trace-empty">
+          <Database size={24} />
+          <strong>No trace selected</strong>
+          <span>Send a chat request or choose a run with tool events.</span>
+        </div>
       ) : (
         <div className="trace-list">
           {rounds.map((round, roundIndex) => {
@@ -41,27 +45,27 @@ export function ToolTracePanel({ rounds = [], events = [] }: ToolTracePanelProps
               : roundCalls.map((call) => ({ tool: call.name, args: call.args }));
 
             return (
-            <article className="trace-round" key={round.round}>
-              <div className="trace-round-title">
-                <ChevronRight size={16} />
-                <span>Round {round.round}</span>
-                <span className="round-kind">{hasToolActivity ? "Tool execution" : "Response"}</span>
-              </div>
-              {!hasToolActivity ? (
-                <div className="trace-direct">
-                  <CheckCircle2 size={17} />
-                  <span>
-                    {callCount > 0 && roundIndex === rounds.length - 1
-                      ? "Final response composed from tool results."
-                      : "Answered directly without invoking a tool."}
-                  </span>
+              <article className="trace-round" key={round.round}>
+                <div className="trace-round-title">
+                  <ChevronRight size={16} />
+                  <span>Round {round.round}</span>
+                  <span className="round-kind">{hasToolActivity ? "Tool execution" : "Response"}</span>
                 </div>
-              ) : (
-                eventsToRender.map((event, index) => (
-                  <ToolEventCard event={event} key={`${round.round}-${index}`} />
-                ))
-              )}
-            </article>
+                {!hasToolActivity ? (
+                  <div className="trace-direct">
+                    <CheckCircle2 size={17} />
+                    <span>
+                      {callCount > 0 && roundIndex === rounds.length - 1
+                        ? "Final response composed from tool results."
+                        : "Answered directly without invoking a tool."}
+                    </span>
+                  </div>
+                ) : (
+                  eventsToRender.map((event, index) => (
+                    <ToolEventCard event={event} key={`${round.round}-${index}`} />
+                  ))
+                )}
+              </article>
             );
           })}
           {rounds.length === 0 && events.map((event, index) => <ToolEventCard event={event} key={index} />)}
@@ -83,12 +87,13 @@ function ToolEventCard({ event }: { event: ToolEvent }) {
       <summary>
         <span className="tool-summary-main">
           <span className="tool-name">{event.tool || "tool"}</span>
-          <code>{inlineArgs(event.args)}</code>
+          <span className="arg-chip-row">{argChips(event.args)}</span>
         </span>
         <span className={hasError ? "mini-badge bad" : isPending ? "mini-badge neutral" : "mini-badge good"}>
           {hasError ? "error" : isPending ? "pending" : "success"}
         </span>
       </summary>
+      {!isPending && <p className="result-summary">{summarizeResult(event.result)}</p>}
       <div className="json-block">
         <label>Args</label>
         <pre>{compactJson(event.args) || "{}"}</pre>
@@ -103,7 +108,43 @@ function ToolEventCard({ event }: { event: ToolEvent }) {
   );
 }
 
-function inlineArgs(value: unknown) {
-  const text = value ? JSON.stringify(value) : "{}";
-  return text.length > 96 ? `${text.slice(0, 93)}...` : text;
+function argChips(value: unknown) {
+  if (!value || typeof value !== "object") {
+    return <code className="arg-chip">no args</code>;
+  }
+  const entries = Object.entries(value as Record<string, unknown>);
+  if (entries.length === 0) {
+    return <code className="arg-chip">no args</code>;
+  }
+  return entries.slice(0, 4).map(([key, item]) => (
+    <code className="arg-chip" key={key}>
+      {key}: {shortValue(item)}
+    </code>
+  ));
+}
+
+function shortValue(value: unknown) {
+  const text = typeof value === "string" ? value : JSON.stringify(value);
+  if (!text) return "";
+  return text.length > 34 ? `${text.slice(0, 31)}...` : text;
+}
+
+function summarizeResult(value: unknown) {
+  if (!value || typeof value !== "object") {
+    return "Tool returned a primitive result.";
+  }
+  const result = value as Record<string, unknown>;
+  if (typeof result.error === "string") {
+    return String(result.message || result.error);
+  }
+  if (Array.isArray(result.items)) {
+    return `${result.items.length} item(s) returned. Open for raw args and result.`;
+  }
+  if (Array.isArray(result.results)) {
+    return `${result.results.length} result(s) returned. Open for raw args and result.`;
+  }
+  if (typeof result.markdown === "string") {
+    return "Formatted markdown returned. Open for raw args and result.";
+  }
+  return "Tool completed. Open for raw args and result.";
 }
