@@ -1,6 +1,4 @@
-# Core tool declarations for the base Research Agent eval.
-# Optional built-ins stay implemented in tools/__init__.py, but are intentionally
-# not exposed here during core/base eval to avoid routing leakage.
+# Research Agent tool declarations with explicit routing boundaries.
 tools:
   - name: clarify
     description: "Ask the user one concise question when required information is missing, or ask for yes/no confirmation before any send/post/publish action. Send/post/publish requests must use response_type yes_no even when the message content is vague."
@@ -122,3 +120,101 @@ tools:
           default: ""
           description: "Optional headline."
       required: [items, template]
+
+  - name: github_search
+    description: "Search GitHub repositories, open-source projects, libraries, or codebases. Use only for repository/codebase discovery requests."
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          default: ""
+          description: "Repository search keywords."
+        language:
+          type: string
+          default: ""
+          description: "Programming language filter, for example python or typescript."
+        sort:
+          type: string
+          enum: [stars, forks, updated]
+          default: "stars"
+          description: "Sort criterion."
+        limit:
+          type: integer
+          default: 5
+          description: "Maximum number of results."
+      required: [query]
+
+  - name: send
+    description: "Send text externally. Use only after explicit yes/no user confirmation for the exact send/post/publish action."
+    parameters:
+      type: object
+      properties:
+        text:
+          type: string
+          default: ""
+          description: "Text to send."
+        confirmed:
+          type: boolean
+          default: false
+          description: "True only after explicit user confirmation."
+      required: [text]
+
+  - name: policy
+    description: "Search internal policy documents. Use only for explicit internal policy, citation, privacy, publishing, or tool-usage questions."
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          default: ""
+          description: "Policy search query."
+        policy_area:
+          type: string
+          enum: [all, ai_research, source_citation, data_privacy, external_publishing, tool_usage]
+          default: "all"
+          description: "Policy area to search."
+        top_k:
+          type: integer
+          default: 3
+          description: "Number of policy snippets."
+      required: [query]
+
+  - name: papers
+    description: "Search scientific papers or academic publications. Use for research literature, arXiv, scholarly, or paper-discovery requests."
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          default: ""
+          description: "Paper search keywords."
+        max_results:
+          type: integer
+          default: 5
+          description: "Maximum number of papers."
+        sort_by:
+          type: string
+          enum: [relevance, lastUpdatedDate, submittedDate]
+          default: "relevance"
+          description: "Sort criterion."
+      required: [query]
+
+  - name: paper_text
+    description: "Read text from a concrete arXiv paper URL or ID. If no arXiv URL/ID is present, ask clarify instead of inventing one."
+    parameters:
+      type: object
+      properties:
+        arxiv_url:
+          type: string
+          default: ""
+          description: "arXiv URL or ID."
+        max_pages:
+          type: integer
+          default: 5
+          description: "Maximum pages to read."
+        max_chars:
+          type: integer
+          default: 8000
+          description: "Maximum characters to return."
+      required: [arxiv_url]

@@ -1,0 +1,254 @@
+{
+  "transcript_id": "v3_nvidia_live_demo",
+  "version": "v3",
+  "artifact_version": "v3+p61dc928c2656+t522132a7f072",
+  "prompt_hash": "61dc928c2656a14fe7dbf7c968032a3dc6b6b8db93beb041f02131b0c61a5ed6",
+  "tools_hash": "522132a7f072c69e5ef9d50697b0b9ad93547687422caf40eb0037e58ec11c28",
+  "provider": "nvidia",
+  "model": "nvidia/nemotron-3-nano-30b-a3b",
+  "created_at": "2026-07-29T11:39:08",
+  "turns": [
+    {
+      "turn_index": 1,
+      "user": "Tìm 3 repo GitHub mới nhất về AI agent viết bằng Python",
+      "assistant_text": "Dưới đây là 3 repository GitHub mới nhất (theo ngày cập nhật gần nhất) về **AI agent** bằng Python mà mình tìm được:\n\n| # | Tên repository | Địa chỉ | Mô tả ngắn |\n|---|----------------|---------|------------|\n| 1 | **maxzoa/1cent** | <https://github.com/maxzoa/1cent> | Pay‑per‑call URL intelligence for AI agents via MCP and x402 USDC on Base Mainnet. |\n| 2 | **wahreus/daily-tip-agent** | <https://github.com/wahreus/daily-tip-agent> | A RAG‑based AI agent for generating daily AWS best‑practice tips. |\n| 3 | **yipwingtim/openclaw-manager** | <https://github.com/yipwingtim/openclaw-manager> | Self‑hosted control plane for isolated, multi‑user AI agent instances. (3 ⭐) |\n\nNhững repo này đều viết bằng Python và được sắp xếp theo **ngày cập nhật gần nhất**. Bạn có thể truy cập vào các liên kết để xem chi tiết hơn.",
+      "status": "answered",
+      "tool_events": [
+        {
+          "tool": "github_search",
+          "args": {
+            "sort": "updated",
+            "language": "Python",
+            "query": "AI agent",
+            "limit": 3
+          },
+          "result": {
+            "tool": "github_search",
+            "query": "AI agent",
+            "language": "Python",
+            "sort": "updated",
+            "items": [
+              {
+                "title": "maxzoa/1cent",
+                "url": "https://github.com/maxzoa/1cent",
+                "source": "github.com",
+                "summary": "Pay-per-call URL intelligence for AI agents via MCP and x402 USDC on Base Mainnet.",
+                "stars": 0,
+                "language": "Python"
+              },
+              {
+                "title": "wahreus/daily-tip-agent",
+                "url": "https://github.com/wahreus/daily-tip-agent",
+                "source": "github.com",
+                "summary": "A RAG-based AI agent for generating daily AWS best-practice tips.",
+                "stars": 0,
+                "language": "Python"
+              },
+              {
+                "title": "yipwingtim/openclaw-manager",
+                "url": "https://github.com/yipwingtim/openclaw-manager",
+                "source": "github.com",
+                "summary": "Self-hosted control plane for isolated, multi-user AI agent instances.",
+                "stars": 3,
+                "language": "Python"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn_index": 2,
+      "user": "Tóm tắt bài viết này giúp mình",
+      "assistant_text": "Bạn có thể cung cấp URL của bài viết cần tóm tắt không?",
+      "status": "waiting_for_user",
+      "tool_events": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn có thể cung cấp URL của bài viết cần tóm tắt không?",
+            "response_type": "text"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn có thể cung cấp URL của bài viết cần tóm tắt không?",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "turn_index": 3,
+      "user": "Đây là link bài viết: https://github.com/blog/ai-future",
+      "assistant_text": "Link bạn cung cấp dẫn đến trang **404 – Page not found** trên GitHub, do đó không có bài viết thực tế để tóm tắt. Vui lòng kiểm tra lại URL hoặc cung cấp nội dung bài viết cần được tổng hợp. \n\n*Ngữ nguồn:* Kết quả trả về từ công cụ `fetch` tại URL `https://github.com/blog/ai-future` chỉ hiển thị thông báo lỗi 404而没有文章内容可供汇总。",
+      "status": "answered",
+      "tool_events": [
+        {
+          "tool": "fetch",
+          "args": {
+            "url": "https://github.com/blog/ai-future"
+          },
+          "result": {
+            "tool": "read_url",
+            "url": "https://github.com/blog/ai-future",
+            "items": [
+              {
+                "title": "Page not found · GitHub · GitHub",
+                "url": "https://github.com/blog/ai-future",
+                "source": "github.com",
+                "summary": "[Skip to content](https://github.com/blog/ai-future#start-of-content)\n\nYou signed in with another tab or window. [Reload](https://github.com/blog/ai-future) to refresh your session.You signed out in another tab or window. [Reload](https://github.com/blog/ai-future) to refresh your session.You switched accounts on another tab or window. [Reload](https://github.com/blog/ai-future) to refresh your session.Dismiss alert\n\n{{ message }}\n\n![](<Base64-Image-Removed>)\n\n![404 “This is not the web page you are looking for”](<Base64-Image-Removed>)![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)![](<Base64-Image-Removed>)\n\nFind code, projects, and people on GitHub:\n\nSearch\n\n[Contact Support](https://support.github.com/?tags=dotcom-404) —\n[GitHub Status](https://githubstatus.com/) —\n[@githubstatus](https://x.com/githubstatus)\n\nYou can’t perform that action at this time."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "turn_index": 4,
+      "user": "Đăng bản tin công nghệ mới nhất lên Telegram giúp mình",
+      "assistant_text": "Bạn có muốn mình tìm và đăng bản tin công nghệ mới nhất lên Telegram không?",
+      "status": "waiting_for_user",
+      "tool_events": [
+        {
+          "tool": "clarify",
+          "args": {
+            "options": [],
+            "response_type": "yes_no",
+            "question": "Bạn có muốn mình tìm và đăng bản tin công nghệ mới nhất lên Telegram không?"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn có muốn mình tìm và đăng bản tin công nghệ mới nhất lên Telegram không?",
+            "response_type": "yes_no",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "turn_index": 5,
+      "user": "Có, mình xác nhận gửi bản tin",
+      "assistant_text": "Bản tin công nghệ mới nhất đã được gửi thành công lên kênh Telegram của bạn. Nếu cần thêm thông tin hoặc muốn thực hiện công việc khác, hãy cho mình biết!",
+      "status": "answered",
+      "tool_events": [
+        {
+          "tool": "lookup",
+          "args": {
+            "topic": "news",
+            "max_results": 5,
+            "timeframe": "day",
+            "query": "technology"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "technology",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "Moburst develops AI engine optimization capabilities for established companies - TechCrunch",
+                "url": "https://techcrunch.com/press-release/moburst-develops-ai-engine-optimization-capabilities-for-established-companies/",
+                "source": "techcrunch.com",
+                "summary": "Mobile growth agency Moburst has built out a dedicated AI Engine Optimization practice aimed at established companies with existing app portfolios, betting that the category still lacks agencies with real depth rather than a rebranded service page. AI Engine Optimization, more commonly abbreviated AEO for Answer Engine Optimization, is the practice of structuring a brand’s content and web presence so AI systems such as ChatGPT, Perplexity, and Google’s AI Overviews can confidently cite it when answering a user’s question directly, rather than showing a ranked list of links. For established companies vetting an AEO partner, the practical test is whether the agency can point to specific app-store-side work, not just web content changes, and whether it can describe a concrete process for reconciling inconsistent brand descriptions across many independent sources rather than treating that as someone else’s problem.",
+                "score": 0.19475074
+              },
+              {
+                "title": "Beyond technology: What makes people fall in love with a startup? - Ynetnews",
+                "url": "https://www.ynetnews.com/tech-and-digital/article/h1zt08ubzx",
+                "source": "ynetnews.com",
+                "summary": "# Beyond technology: What makes people fall in love with a startup? ## Tech and fintech leaders explain why trust, branding and employee ownership, not technology alone, turn startups into companies that investors, customers and workers continue to support through uncertainty. For Tu B’Av, Israel’s holiday of love, figures from the technology and fintech sectors are turning their attention from valuations, algorithms and financial reports to a less measurable force: the emotional connection between companies and the people who invest in them, work for them and use their products. It is built through trust, transparency, a clear sense of purpose and the ability to remain consistent during periods of uncertainty. “They don’t just fall in love with technology or bottom-line numbers. “Startups spend years developing their products, but it’s branding that makes people fall in love with the company,” she said. “People don’t fall in love with technology. They fall in love with what that technology makes possible,” she said.",
+                "score": 0.17549601
+              },
+              {
+                "title": "Asian technology stocks extend sell-off with SoftBank down 7% as AI plays take a hit - CNBC",
+                "url": "https://www.cnbc.com/2026/07/29/chip-selloff-sk-hynix-samsung-softbank.html",
+                "source": "cnbc.com",
+                "summary": "# Asian technology stocks extend sell-off with SoftBank down 7% as AI plays take a hit. * Asian technology stocks extended their sell-off on Wednesday, with semiconductor names leading declines after another weak session in the U.S. * In South Korea, SK Hynix slid more than 10% after the chip giant missed analysts' estimates in spite of posting another record quarterly profit. Asian technology stocks extended their sell-off on Wednesday, with semiconductor names leading declines after another weak session in the U.S. In South Korea, SK Hynix slid more than 10% after the chip giant missed analysts' estimates despite posting record quarterly profit and revenue. The latest weakness in Asian chip stocks reflects \"the ongoing deleveraging process in Korea and softer sentiment towards global technology stocks,\" said Kieron Poon, investment director of Asian equities at Aberdeen Investments, in a Tuesday note. The declines in Asia came on the heels of another weak session for U.S. semiconductor stocks overnight.",
+                "score": 0.15645286
+              },
+              {
+                "title": "AI could soon be watching inmates inside the Harris County Jail - Houston Chronicle",
+                "url": "https://www.houstonchronicle.com/politics/houston/article/harris-county-jail-ai-cameras-22358937.php",
+                "source": "houstonchronicle.com",
+                "summary": "# Harris County considers AI cameras to monitor jail inmates and detect weapons, other contraband. Artificial intelligence could soon be used to monitor inmates at the Harris County Jail. The Harris County Sheriff’s Office recently invited companies to submit proposals for an AI-powered camera system capable of analyzing inmates’ behavior and detecting weapons and other contraband. While the sheriff’s office has not yet chosen a vendor, it’s the first step toward bringing the technology into the jail and follows a wider pattern of AI implementation across county government. The hope, he said, is that the same technology can be adapted for use in a jail setting. “It's not out in the community, and the intent is to enhance the safety of the people who are held in the jail and the people who work there,” Spencer said. The sheriff’s proposal would not be the county’s first use of AI technology.",
+                "score": 0.1358617
+              },
+              {
+                "title": "Exclusive: Andrew Ng's new AI-powered ed tech startup gets $100 million - Axios",
+                "url": "https://www.axios.com/2026/07/28/coursera-learnvector-andrew-ng",
+                "source": "axios.com",
+                "summary": "Coursera is putting $100 million into LearnVector, a new AI education company founded by Andrew Ng, a pioneer in AI and Coursera's chairman and co-founder, the companies shared first with Axios. **Why it matters:** The investment is one of the largest public bets yet by an established education technology company on AI-native learning, and marks Andrew Ng's latest stab at redefining how people learn using technology. **Driving the news:** With the investment, Coursera will own roughly a third of LearnVector, and the two companies will explore commercial partnerships that combine LearnVector's AI technology with Coursera's content library and global distribution network. **What they're saying:** Coursera CEO Greg Hart told Axios the LearnVector's goal is to build an experience that is longer-lasting than prompting a chatbot to help students learn. **The intrigue:** Ng is Coursera's co-founder and remains its chairman even as he works to build LearnVector.",
+                "score": 0.12055289
+              }
+            ]
+          }
+        },
+        {
+          "tool": "format",
+          "args": {
+            "headline": "Bản tin công nghệ mới nhất",
+            "template": "daily_ai_vn",
+            "items": [
+              {
+                "section": "AI & Tech",
+                "source": "TechCrunch",
+                "title": "Moburst develops AI engine optimization capabilities for established companies",
+                "url": "https://techcrunch.com/press-release/moburst-develops-ai-engine-optimization-capabilities-for-established-companies/",
+                "summary": "Mobile growth agency Moburst has built out a dedicated AI Engine Optimization practice aimed at established companies with existing app portfolios, betting that the category still lacks agencies with real depth rather than a rebranded service page. AI Engine Optimization, more commonly abbreviated AEO for Answer Engine Optimization, is the practice of structuring a brand’s content and web presence so AI systems such as ChatGPT, Perplexity, and Google’s AI Overviews can confidently cite it when answering a user’s question directly, rather than showing a ranked list of links. For established companies vetting an AEO partner, the practical test is whether the agency can point to specific app-store-side work, not just web content changes, and whether it can describe a concrete process for reconciling inconsistent brand descriptions across many independent sources rather than treating that as someone else’s problem."
+              },
+              {
+                "section": "Startup & Culture",
+                "source": "Ynetnews",
+                "title": "Beyond technology: What makes people fall in love with a startup?",
+                "url": "https://www.ynetnews.com/tech-and-digital/article/h1zt08ubzx",
+                "summary": "# Beyond technology: What makes people fall in love with a startup? ## Tech and fintech leaders explain why trust, branding and employee ownership, not technology alone, turn startups into companies that investors, customers and workers continue to support through uncertainty. For Tu B’Av, Israel’s holiday of love, figures from the technology and fintech sectors are turning their attention from valuations, algorithms and financial reports to a less measurable force: the emotional connection between companies and the people who invest in them, work for them and use their products. It is built through trust, transparency, a clear sense of purpose and the ability to remain consistent during periods of uncertainty. “They don’t just fall in love with technology or bottom-line numbers. “Startups spend years developing their products, but it’s branding that makes people fall in love with the company,” she said. “People don’t fall in love with technology. They fall in love with what that technology makes possible,” she said."
+              },
+              {
+                "section": "Market",
+                "source": "CNBC",
+                "title": "Asian technology stocks extend sell-off with SoftBank down 7% as AI plays take a hit",
+                "url": "https://www.cnbc.com/2026/07/29/chip-selloff-sk-hynix-samsung-softbank.html",
+                "summary": "Asian technology stocks extended their sell-off on Wednesday, with semiconductor names leading declines after another weak session in the U.S. In South Korea, SK Hynix slid more than 10% after the chip giant missed analysts' estimates despite posting record quarterly profit and revenue. The latest weakness in Asian chip stocks reflects \"the ongoing deleveraging process in Korea and softer sentiment towards global technology stocks,\" said Kieron Poon, investment director of Asian equities at Aberdeen Investments, in a Tuesday note. The declines in Asia came on the heels of another weak session for U.S. semiconductor stocks overnight."
+              },
+              {
+                "section": "Policy",
+                "source": "Houston Chronicle",
+                "title": "AI could soon be watching inmates inside the Harris County Jail",
+                "url": "https://www.houstonchronicle.com/politics/houston/article/harris-county-jail-ai-cameras-22358937.php",
+                "summary": "Harris County considers AI cameras to monitor jail inmates and detect weapons, other contraband. Artificial intelligence could soon be used to monitor inmates at the Harris County Jail. The Harris County Sheriff’s Office recently invited companies to submit proposals for an AI-powered camera system capable of analyzing inmates’ behavior and detecting weapons and other contraband. While the sheriff’s office has not yet chosen a vendor, it’s the first step toward bringing the technology into the jail and follows a wider pattern of AI implementation across county government. The hope, he said, is that the same technology can be adapted for use in a jail setting. “It's not out in the community, and the intent is to enhance the safety of the people who are held in the jail and the people who work there,” Spencer said. The sheriff’s proposal would not be the county’s first use of AI technology."
+              },
+              {
+                "section": "Education",
+                "source": "Axios",
+                "title": "Exclusive: Andrew Ng's new AI-powered ed tech startup gets $100 million",
+                "url": "https://www.axios.com/2026/07/28/coursera-learnvector-andrew-ng",
+                "summary": "Coursera is putting $100 million into LearnVector, a new AI education company founded by Andrew Ng, a pioneer in AI and Coursera's chairman and co-founder, the companies shared first with Axios. **Why it matters:** The investment is one of the largest public bets yet by an established education technology company on AI-native learning, and marks Andrew Ng's latest stab at redefining how people learn using technology. **Driving the news:** With the investment, Coursera will own roughly a third of LearnVector, and the two companies will explore commercial partnerships that combine LearnVector's AI technology with Coursera's content library and global distribution network. **What they're saying:** Coursera CEO Greg Hart told Axios the LearnVector's goal is to build an experience that is longer-lasting than prompting a chatbot to help students learn. **The intrigue:** Ng is Coursera's co-founder and remains its chairman even as he works to build LearnVector."
+              }
+            ]
+          },
+          "result": {
+            "tool": "render_digest",
+            "template": "daily_ai_vn",
+            "markdown": "**Bản tin công nghệ mới nhất**\n\n**AI & Tech**\n- Mobile growth agency Moburst has built out a dedicated AI Engine Optimization practice aimed at established companies with existing app portfolios, betting that the category still lacks agencies with real depth rather than a rebranded service page. AI Engine Optimization, more... - [TechCrunch](https://techcrunch.com/press-release/moburst-develops-ai-engine-optimization-capabilities-for-established-companies/)\n\n**Startup & Culture**\n- # Beyond technology: What makes people fall in love with a startup? ## Tech and fintech leaders explain why trust, branding and employee ownership, not technology alone, turn startups into companies that investors, customers and workers continue to support through uncertainty.... - [Ynetnews](https://www.ynetnews.com/tech-and-digital/article/h1zt08ubzx)\n\n**Market**\n- Asian technology stocks extended their sell-off on Wednesday, with semiconductor names leading declines after another weak session in the U.S. In South Korea, SK Hynix slid more than 10% after the chip giant missed analysts' estimates despite posting record quarterly profit an... - [CNBC](https://www.cnbc.com/2026/07/29/chip-selloff-sk-hynix-samsung-softbank.html)\n\n**Policy**\n- Harris County considers AI cameras to monitor jail inmates and detect weapons, other contraband. Artificial intelligence could soon be used to monitor inmates at the Harris County Jail. The Harris County Sheriff’s Office recently invited companies to submit proposals for an AI... - [Houston Chronicle](https://www.houstonchronicle.com/politics/houston/article/harris-county-jail-ai-cameras-22358937.php)\n\n**Education**\n- Coursera is putting $100 million into LearnVector, a new AI education company founded by Andrew Ng, a pioneer in AI and Coursera's chairman and co-founder, the companies shared first with Axios. **Why it matters:** The investment is one of the largest public bets yet by an est... - [Axios](https://www.axios.com/2026/07/28/coursera-learnvector-andrew-ng)\n",
+            "item_count": 5
+          }
+        },
+        {
+          "tool": "send",
+          "args": {
+            "confirmed": true,
+            "text": "**Bản tin công nghệ mới nhất**\n\n**AI & Tech**\n- Mobile growth agency Moburst has built out a dedicated AI Engine Optimization practice aimed at established companies with existing app portfolios, betting that the category still lacks agencies with real depth rather than a rebranded service page. AI Engine Optimization, more... - [TechCrunch](https://techcrunch.com/press-release/moburst-develops-ai-engine-optimization-capabilities-for-established-companies/)\n\n**Startup & Culture**\n- # Beyond technology: What makes people fall in love with a startup? ## Tech and fintech leaders explain why trust, branding and employee ownership, not technology alone, turn startups into companies that investors, customers and workers continue to support through uncertainty. For Tu B’Av, Israel’s holiday of love, figures from the technology and fintech sectors are turning their attention from valuations, algorithms and financial reports to a less measurable force: the emotional connection between companies and the people who invest in them, work for them and use their products. It is built through trust, transparency, a clear sense of purpose and the ability to remain consistent during periods of uncertainty. “They don’t just fall in love with technology or bottom-line numbers. “Startups spend years developing their products, but it’s branding that makes people fall in love with the company,” she said. “People don’t fall in love with technology. They fall in love with what that technology makes possible,” she said.\" - [Ynetnews](https://www.ynetnews.com/tech-and-digital/article/h1zt08ubzx)\n\n**Market**\n- Asian technology stocks extended their sell-off on Wednesday, with semiconductor names leading declines after another weak session in the U.S. In South Korea, SK Hynix slid more than 10% after the chip giant missed analysts' estimates despite posting record quarterly profit an... - [CNBC](https://www.cnbc.com/2026/07/29/chip-selloff-sk-hynix-samsung-softbank.html)\n\n**Policy**\n- Harris County considers AI cameras to monitor jail inmates and detect weapons, other contraband. Artificial intelligence could soon be used to monitor inmates at the Harris County Jail. The Harris County Sheriff’s Office recently invited companies to submit proposals for an AI... - [Houston Chronicle](https://www.houstonchronicle.com/politics/houston/article/harris-county-jail-ai-cameras-22358937.php)\n\n**Education**\n- Coursera is putting $100 million into LearnVector, a new AI education company founded by Andrew Ng, a pioneer in AI and Coursera's chairman and co-founder, the companies shared first with Axios. **Why it matters:** The investment is one of the largest public bets yet by an est... - [Axios](https://www.axios.com/2026/07/28/coursera-learnvector-andrew-ng)"
+          },
+          "result": {
+            "tool": "send_telegram",
+            "status": "sent"
+          }
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-07-29T11:39:08"
+}
