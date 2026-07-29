@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { GitCommitHorizontal } from "lucide-react";
+=======
+import { AlertTriangle, GitCommitHorizontal } from "lucide-react";
+>>>>>>> main
 import type { VersionLogRow } from "../types/agent";
 
 type VersionEvidenceProps = {
@@ -17,7 +21,14 @@ export function VersionEvidence({ rows }: VersionEvidenceProps) {
       </div>
 
       {rows.length === 0 ? (
-        <div className="empty-state">No version_log.csv rows found.</div>
+        <div className="empty-state version-empty">
+          <AlertTriangle size={24} />
+          <strong>No version evidence recorded yet.</strong>
+          <span>
+            The app can run any version label, but version_log.csv is empty. Add real v1/v2/v3 rows after each
+            prompt or tool change to make this timeline demo-ready.
+          </span>
+        </div>
       ) : (
         <div className="version-timeline">
           {rows.map((row, index) => (
@@ -32,7 +43,10 @@ export function VersionEvidence({ rows }: VersionEvidenceProps) {
                 </div>
                 <h3>{row.reason || "No reason recorded"}</h3>
                 <p>{row.hypothesis || "No hypothesis recorded"}</p>
-                <code>{row.run_file || row.artifact_version || "No run file"}</code>
+                <div className="version-hashes">
+                  <code>{row.run_file || "No run file"}</code>
+                  <code>{row.artifact_version || "No artifact version"}</code>
+                </div>
               </div>
             </article>
           ))}

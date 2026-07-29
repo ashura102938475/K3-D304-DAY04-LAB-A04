@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Activity, Bot, GitCompare, LayoutDashboard, Wrench } from "lucide-react";
+=======
+import { Activity, Bot, FileClock, GitCompare, LayoutDashboard, Wrench } from "lucide-react";
+>>>>>>> main
 import type { ReactNode } from "react";
 
 type AppShellProps = {
@@ -9,10 +13,11 @@ type AppShellProps = {
 };
 
 const navItems = [
-  { id: "chat", label: "Chat", icon: Bot },
+  { id: "demo", label: "Demo", icon: Bot },
   { id: "runs", label: "Runs", icon: LayoutDashboard },
   { id: "versions", label: "Versions", icon: GitCompare },
-  { id: "tools", label: "Tools", icon: Wrench }
+  { id: "tools", label: "Tools", icon: Wrench },
+  { id: "transcripts", label: "Transcripts", icon: FileClock }
 ];
 
 export function AppShell({ selectedView, onViewChange, health, children }: AppShellProps) {
@@ -24,8 +29,8 @@ export function AppShell({ selectedView, onViewChange, health, children }: AppSh
             <Activity size={22} />
           </div>
           <div>
-            <h1>Research Lab</h1>
-            <p>Tool eval lab</p>
+            <h1>Research Agent</h1>
+            <p>Tool-calling demo</p>
           </div>
         </div>
 

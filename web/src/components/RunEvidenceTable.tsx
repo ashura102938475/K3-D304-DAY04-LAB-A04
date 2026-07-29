@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { AlertTriangle, FileJson } from "lucide-react";
+=======
+import { AlertTriangle, CheckCircle2, FileJson, Filter, Search } from "lucide-react";
+import { useMemo, useState } from "react";
+>>>>>>> main
 import type { RunDetail, RunResult, RunSummary } from "../types/agent";
 
 type RunEvidenceTableProps = {
@@ -9,7 +14,20 @@ type RunEvidenceTableProps = {
 };
 
 export function RunEvidenceTable({ runs, selectedRun, detail, onSelectRun }: RunEvidenceTableProps) {
+  const [caseFilter, setCaseFilter] = useState("all");
+  const [query, setQuery] = useState("");
   const failedCases = (detail?.results || []).filter((item) => !item.result?.passed);
+  const filteredCases = useMemo(() => {
+    return (detail?.results || []).filter((item) => {
+      const passed = Boolean(item.result?.passed);
+      const matchesState =
+        caseFilter === "all" ||
+        (caseFilter === "failed" && !passed) ||
+        (caseFilter === "passed" && passed);
+      const haystack = `${item.id} ${item.result?.observed_mismatch || ""} ${item.result?.failure_type || ""}`.toLowerCase();
+      return matchesState && haystack.includes(query.toLowerCase());
+    });
+  }, [caseFilter, detail?.results, query]);
 
   return (
     <section className="panel run-panel">
@@ -33,7 +51,7 @@ export function RunEvidenceTable({ runs, selectedRun, detail, onSelectRun }: Run
                 type="button"
                 onClick={() => onSelectRun(run.file)}
               >
-                <span>
+                <span className="run-row-main">
                   <strong>{run.version || "v?"}</strong>
                   <small>{run.provider || "-"} / {run.suite || "-"}</small>
                 </span>
@@ -65,16 +83,32 @@ export function RunEvidenceTable({ runs, selectedRun, detail, onSelectRun }: Run
                   <Metric label="Arguments" value={formatMetric(detail.summary?.argument_accuracy)} />
                 </div>
 
-                <div className="section-title">
-                  <AlertTriangle size={17} />
-                  <span>{failedCases.length} failing case(s)</span>
+                <div className="inspector-toolbar">
+                  <div className="section-title">
+                    <AlertTriangle size={17} />
+                    <span>{failedCases.length} failing case(s)</span>
+                  </div>
+                  <div className="case-controls">
+                    <label className="search-box">
+                      <Search size={15} />
+                      <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search cases" />
+                    </label>
+                    <label className="select-box">
+                      <Filter size={15} />
+                      <select value={caseFilter} onChange={(event) => setCaseFilter(event.target.value)}>
+                        <option value="all">All cases</option>
+                        <option value="failed">Failed</option>
+                        <option value="passed">Passed</option>
+                      </select>
+                    </label>
+                  </div>
                 </div>
 
-                {failedCases.length === 0 ? (
-                  <div className="trace-direct">All measured cases passed in this run.</div>
+                {filteredCases.length === 0 ? (
+                  <div className="trace-direct">No cases match this filter.</div>
                 ) : (
                   <div className="case-grid">
-                    {failedCases.map((item) => <CaseCard item={item} key={item.id} />)}
+                    {filteredCases.map((item) => <CaseCard item={item} key={item.id} />)}
                   </div>
                 )}
               </>
@@ -98,18 +132,22 @@ function Metric({ label, value }: { label: string; value: string }) {
 }
 
 function CaseCard({ item }: { item: RunResult }) {
+  const passed = Boolean(item.result?.passed);
   const failures = item.result?.failures;
   const failureText = Array.isArray(failures) ? failures.join("; ") : String(failures || "No failure detail");
 
   return (
-    <article className="case-card">
+    <article className={passed ? "case-card passed" : "case-card"}>
       <div>
         <strong>{item.id}</strong>
-        <span className="status-badge bad">FAIL</span>
+        <span className={passed ? "status-badge good" : "status-badge bad"}>
+          {passed ? <CheckCircle2 size={13} /> : <AlertTriangle size={13} />}
+          {passed ? "PASS" : "FAIL"}
+        </span>
       </div>
       <p>{String(item.metadata?.what_it_tests || "No description")}</p>
-      <code>{String(item.result?.observed_mismatch || item.result?.failure_type || "mismatch")}</code>
-      <small>{failureText}</small>
+      <code>{String(item.result?.observed_mismatch || item.result?.failure_type || "ok")}</code>
+      {!passed && <small>{failureText}</small>}
     </article>
   );
 }

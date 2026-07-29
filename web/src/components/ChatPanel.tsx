@@ -1,4 +1,18 @@
+<<<<<<< HEAD
 import { Activity, CircleCheck, Loader2, Send, Settings2, Sparkles } from "lucide-react";
+=======
+import {
+  Activity,
+  CircleCheck,
+  Loader2,
+  Newspaper,
+  Radio,
+  Search,
+  Send,
+  Settings2,
+  Sparkles
+} from "lucide-react";
+>>>>>>> main
 import { FormEvent, useEffect, useState } from "react";
 import { sendChat } from "../lib/api";
 import type { ChatMessage, ChatResponse, Evidence } from "../types/agent";
@@ -15,10 +29,26 @@ type DisplayMessage = ChatMessage & {
 };
 
 const starterPrompts = [
-  "Latest tweet from Sam Altman?",
-  "Search recent posts about GPT-5 on Twitter",
-  "Read https://example.com and summarize it",
-  "Send this digest to Telegram"
+  {
+    label: "Latest post",
+    icon: Radio,
+    prompt: "Find the latest public post from Sam Altman and summarize the main point."
+  },
+  {
+    label: "AI news",
+    icon: Newspaper,
+    prompt: "Search recent AI news from this week and give me a concise digest with sources."
+  },
+  {
+    label: "Paper search",
+    icon: Search,
+    prompt: "Find recent papers about tool calling agents and summarize the top 3."
+  },
+  {
+    label: "URL summary",
+    icon: Sparkles,
+    prompt: "Read https://example.com and summarize what is useful for a research agent demo."
+  }
 ];
 
 export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
@@ -32,11 +62,18 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
   const [error, setError] = useState<string | null>(null);
 
   const canSubmit = input.trim().length > 0 && !isSending;
+
   useEffect(() => {
     if (evidence?.defaults.provider) {
       setProvider(evidence.defaults.provider);
     }
   }, [evidence?.defaults.provider]);
+
+  useEffect(() => {
+    if (evidence?.defaults.version) {
+      setVersion(evidence.defaults.version);
+    }
+  }, [evidence?.defaults.version]);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -74,15 +111,27 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
   }
 
   return (
+<<<<<<< HEAD
     <section className="panel chat-panel agent-console">
       <div className="panel-heading compact-heading">
         <div>
           <h2>Agent chat</h2>
           <p>Current version: {version}. Provider: {provider}.</p>
+=======
+    <section className="panel chat-panel">
+      <div className="panel-heading chat-heading">
+        <div>
+          <h2>Demo request</h2>
+          <p>Send one focused prompt and narrate the exact tool path from the trace.</p>
         </div>
-        <Settings2 size={20} />
+        <div className={isSending ? "run-state running" : "run-state"}>
+          {isSending ? <Loader2 className="spin" size={16} /> : <CircleCheck size={16} />}
+          <span>{isSending ? "Running" : "Ready"}</span>
+>>>>>>> main
+        </div>
       </div>
 
+<<<<<<< HEAD
       <div className="control-strip">
         <label>
           Provider
@@ -112,23 +161,75 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
 
       <VersionSelector rows={evidence?.version_log || []} value={version} onChange={setVersion} />
 
+=======
+      <div className="demo-toolbar">
+        <div className="control-strip">
+          <label>
+            <span>Provider</span>
+            <select value={provider} onChange={(event) => setProvider(event.target.value)}>
+              <option value="nvidia">nvidia</option>
+              <option value="openrouter">openrouter</option>
+              <option value="openai">openai</option>
+              <option value="anthropic">anthropic</option>
+              <option value="gemini">gemini</option>
+            </select>
+          </label>
+          <label>
+            <span>Model</span>
+            <input value={model} onChange={(event) => setModel(event.target.value)} placeholder="provider default" />
+          </label>
+          <label className="round-control">
+            <span>Rounds</span>
+            <input
+              min={1}
+              max={8}
+              type="number"
+              value={maxRounds}
+              onChange={(event) => setMaxRounds(Number(event.target.value))}
+            />
+          </label>
+        </div>
+
+        <div className="version-control">
+          <span>
+            <Settings2 size={15} />
+            Version label
+          </span>
+          <VersionSelector rows={evidence?.version_log || []} value={version} onChange={setVersion} />
+        </div>
+      </div>
+
+>>>>>>> main
       <div className="sample-row">
         <div className="sample-label">
           <Sparkles size={15} />
-          <span>Samples</span>
+          <span>Demo prompts</span>
         </div>
+<<<<<<< HEAD
         {starterPrompts.map((prompt) => (
           <button key={prompt} type="button" onClick={() => setInput(prompt)}>
             {prompt}
           </button>
         ))}
+=======
+        {starterPrompts.map((item) => {
+          const Icon = item.icon;
+          return (
+            <button key={item.label} type="button" onClick={() => setInput(item.prompt)}>
+              <Icon size={15} />
+              <span>{item.label}</span>
+            </button>
+          );
+        })}
+>>>>>>> main
       </div>
 
       <div className="message-list" aria-live="polite">
         {messages.length === 0 ? (
           <div className="empty-chat">
-            <strong>Start with one clear research request.</strong>
-            <span>The next response will appear here, and the tool trace will update on the right.</span>
+            <Sparkles size={24} />
+            <strong>Choose a scenario, then run the agent.</strong>
+            <span>The response appears here. Tool calls, arguments, and raw results stay visible on the right.</span>
           </div>
         ) : (
           messages.map((message, index) => (
@@ -154,7 +255,11 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
           aria-label="Agent request"
           value={input}
           onChange={(event) => setInput(event.target.value)}
+<<<<<<< HEAD
           placeholder="Ask for news, tweets, a URL summary, papers, or GitHub repositories..."
+=======
+          placeholder="Ask for news, tweets, URL summaries, papers, policies, or GitHub repositories..."
+>>>>>>> main
           rows={3}
         />
         <button disabled={!canSubmit} type="submit">
@@ -191,7 +296,7 @@ function MessageTraceSummary({ result }: { result?: ChatResponse }) {
       <Activity size={15} />
       <strong>{toolNames.length} tool call(s)</strong>
       <span>
-        {toolRounds} round(s) · {toolNames.join(" → ")}
+        {toolRounds} round(s) / {toolNames.join(" -> ")}
       </span>
     </div>
   );

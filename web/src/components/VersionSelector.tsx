@@ -8,7 +8,11 @@ type VersionSelectorProps = {
 
 export function VersionSelector({ rows, value, onChange }: VersionSelectorProps) {
   const versions = Array.from(new Set(rows.map((row) => row.version).filter(Boolean))) as string[];
+<<<<<<< HEAD
   const options = versions.length > 0 ? versions : ["v3"];
+=======
+  const options = versions.length > 0 ? versions : [value || "v3"];
+>>>>>>> main
 
   return (
     <div className="version-selector" aria-label="Version selector">
