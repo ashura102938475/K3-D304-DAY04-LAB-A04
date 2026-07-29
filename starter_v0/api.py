@@ -15,6 +15,10 @@ ROOT = Path(__file__).parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from env_loader import load_lab_env  # noqa: E402
+
+load_lab_env(ROOT)
+
 from chat import (  # noqa: E402
     now_iso,
     run_model_tool_loop,
@@ -37,6 +41,7 @@ app = FastAPI(title="Research Agent UI API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -50,7 +55,7 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1)
-    provider: Literal["openrouter", "openai", "anthropic", "gemini", "nvidia", "nim"] = "openrouter"
+    provider: Literal["openrouter", "openai", "anthropic", "gemini", "nvidia", "nim"] = "nvidia"
     model: str | None = None
     version: str = "v3"
     history: list[ChatMessage] = Field(default_factory=list)
@@ -168,7 +173,7 @@ def evidence() -> dict[str, Any]:
         "tools": tool_declarations,
         "transcripts": transcript_summaries(),
         "defaults": {
-            "provider": "openrouter",
+            "provider": "nvidia",
             "version": "v3",
             "max_tool_rounds": 4,
         },

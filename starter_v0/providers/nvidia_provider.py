@@ -12,4 +12,7 @@ class NvidiaProvider(OpenAIProvider):
             api_key_env="NVIDIA_API_KEY",
             base_url=os.getenv("NVIDIA_BASE_URL", "https://integrate.api.nvidia.com/v1"),
             default_model=os.getenv("NVIDIA_MODEL", "nvidia/nemotron-3-nano-30b-a3b"),
+            config_env_prefix="NVIDIA",
+            parallel_tool_calls=True,
+            default_timeout_seconds=240.0,
         )

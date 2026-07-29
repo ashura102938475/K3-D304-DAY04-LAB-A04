@@ -1,5 +1,5 @@
 import { Loader2, Send, Settings2 } from "lucide-react";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { sendChat } from "../lib/api";
 import type { ChatMessage, ChatResponse, Evidence } from "../types/agent";
 import { VersionSelector } from "./VersionSelector";
@@ -19,7 +19,7 @@ const starterPrompts = [
 export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
-  const [provider, setProvider] = useState(evidence?.defaults.provider || "openrouter");
+  const [provider, setProvider] = useState(evidence?.defaults.provider || "nvidia");
   const [version, setVersion] = useState(evidence?.defaults.version || "v3");
   const [model, setModel] = useState("");
   const [maxRounds, setMaxRounds] = useState(evidence?.defaults.max_tool_rounds || 4);
@@ -31,6 +31,12 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
     () => [...messages].reverse().find((message) => message.role === "assistant"),
     [messages]
   );
+
+  useEffect(() => {
+    if (evidence?.defaults.provider) {
+      setProvider(evidence.defaults.provider);
+    }
+  }, [evidence?.defaults.provider]);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
