@@ -17,6 +17,11 @@ starter/
 # Tool scratch output
 arxiv_papers/
 
+# Frontend build and local runtime output
+web/node_modules/
+web/dist/
+web/*.log
+
 # OS / editor
 .DS_Store
 Thumbs.db
