@@ -1,11 +1,11 @@
 import type { ChatRequest, ChatResponse, Evidence, RunDetail, TranscriptDetail } from "../types/agent";
 
 export const mockRunDetail: RunDetail = {
-  file: "demo_v3_B_base_nvidia.json",
-  path: "runs/demo_v3_B_base_nvidia.json",
-  run_id: "demo_v3_B_base_nvidia",
-  version: "v3",
-  artifact_version: "v3+pdemo00000001+tdemo00000001",
+  file: "demo_v0_B_base_nvidia.json",
+  path: "runs/demo_v0_B_base_nvidia.json",
+  run_id: "demo_v0_B_base_nvidia",
+  version: "v0",
+  artifact_version: "v0+pdemo00000001+tdemo00000001",
   phase: "B",
   suite: "base",
   provider: "nvidia",
@@ -93,11 +93,11 @@ export const mockRunDetail: RunDetail = {
 };
 
 export const mockTranscriptDetail: TranscriptDetail = {
-  file: "demo_v3_nvidia.transcript.json",
-  path: "transcripts/demo_v3_nvidia.transcript.json",
-  transcript_id: "demo_v3_nvidia",
-  version: "v3",
-  artifact_version: "v3+pdemo00000001+tdemo00000001",
+  file: "demo_v0_nvidia.transcript.json",
+  path: "transcripts/demo_v0_nvidia.transcript.json",
+  transcript_id: "demo_v0_nvidia",
+  version: "v0",
+  artifact_version: "v0+pdemo00000001+tdemo00000001",
   provider: "nvidia",
   model: "demo-model",
   created_at: "2026-07-29T15:45:00",
@@ -182,16 +182,16 @@ export const mockEvidence: Evidence = {
       run_file: "demo only"
     },
     {
-      version: "v3",
+      version: "v0",
       author: "demo",
       changed_artifact: "system_prompt.md + tools.yaml",
-      artifact_version: "v3+pdemo00000001+tdemo00000001",
+      artifact_version: "v0+pdemo00000001+tdemo00000001",
       reason: "Clarify tool boundaries and improve digest formatting.",
       hypothesis: "Explicit routing rules reduce wrong-tool and send-boundary failures.",
       metric_name: "case_accuracy",
       metric_before: "0.55",
       metric_after: "0.80",
-      run_file: "demo_v3_B_base_nvidia.json"
+      run_file: "demo_v0_B_base_nvidia.json"
     }
   ],
   tools: [
@@ -239,7 +239,7 @@ export const mockEvidence: Evidence = {
   ],
   defaults: {
     provider: "nvidia",
-    version: "v3",
+    version: "v0",
     max_tool_rounds: 4
   }
 };
@@ -251,7 +251,7 @@ export function mockChatResponse(payload: ChatRequest): ChatResponse {
     assistant_text: `Demo response for: ${message}\n\nThe frontend is using evaluation data because the backend is not reachable.`,
     provider: "demo",
     model: "offline-evaluation",
-    artifact_version: `${payload.version || "v3"}+pdemo00000001+tdemo00000001`,
+    artifact_version: `${payload.version || "v0"}+pdemo00000001+tdemo00000001`,
     rounds: [
       {
         round: 1,
@@ -292,8 +292,8 @@ export function mockChatResponse(payload: ChatRequest): ChatResponse {
     ],
     transcript: {
       id: "demo_transcript",
-      file: "demo_v3_nvidia.transcript.json",
-      path: "transcripts/demo_v3_nvidia.transcript.json"
+      file: "demo_v0_nvidia.transcript.json",
+      path: "transcripts/demo_v0_nvidia.transcript.json"
     }
   };
 }

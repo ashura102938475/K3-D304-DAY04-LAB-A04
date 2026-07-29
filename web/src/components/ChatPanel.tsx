@@ -51,7 +51,7 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [input, setInput] = useState("");
   const [provider, setProvider] = useState(evidence?.defaults.provider || "nvidia");
-  const [version, setVersion] = useState(evidence?.defaults.version || "v3");
+  const [version, setVersion] = useState(evidence?.defaults.version || "v0");
   const [model, setModel] = useState("");
   const [maxRounds, setMaxRounds] = useState(evidence?.defaults.max_tool_rounds || 4);
   const [isSending, setIsSending] = useState(false);
