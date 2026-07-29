@@ -78,7 +78,7 @@ echo -e "${GREEN}🐍 Python: ${PYTHON}${RESET}"
 # ── Kiểm tra node_modules ────────────────────────────────────────────────────
 if [ ! -d "$FRONTEND_DIR/node_modules" ]; then
     echo -e "${YELLOW}📦 node_modules chưa tồn tại, đang chạy npm install...${RESET}"
-    (cd "$FRONTEND_DIR" && npm install)
+    (cd "$FRONTEND_DIR" && npm ci)
 fi
 
 # ── Khởi động Backend ────────────────────────────────────────────────────────

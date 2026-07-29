@@ -14,7 +14,8 @@ class ArtifactVersion:
 
 
 def file_hash(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    content = path.read_bytes().replace(b"\r\n", b"\n")
+    return hashlib.sha256(content).hexdigest()
 
 
 def short_hash(value: str, length: int = 12) -> str:

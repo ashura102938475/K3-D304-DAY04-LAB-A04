@@ -57,7 +57,7 @@ if ($VenvPython) {
 if (-not (Test-Path "$FrontendDir\node_modules")) {
     Write-Color "📦 node_modules chưa tồn tại, đang chạy npm install..." Yellow
     Push-Location $FrontendDir
-    npm install
+    npm ci
     Pop-Location
 }
 

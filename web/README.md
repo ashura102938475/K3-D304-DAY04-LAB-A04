@@ -4,16 +4,22 @@ Dashboard for the Day 04 research agent lab.
 
 ## Run locally
 
-From `starter_v0`, start the API:
+From the repository root, launch both services:
+
+```powershell
+.\start.ps1
+```
+
+Or start them separately. From `starter_v0`, start the API:
 
 ```bash
-uvicorn api:app --reload --host 127.0.0.1 --port 8000
+.\.venv\Scripts\python.exe -m uvicorn api:app --reload --host 127.0.0.1 --port 8000
 ```
 
 From `web`, start React:
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
