@@ -1,107 +1,106 @@
 #!/usr/bin/env bash
-# =============================================================================
-# start.sh — Khởi động Backend (FastAPI) + Frontend (Vite) cùng lúc
-# =============================================================================
-# Cách dùng:
-#   chmod +x start.sh   (lần đầu tiên)
+set -euo pipefail
+
+# Start the Day 04 Research Agent backend and React frontend together.
+# Usage:
 #   ./start.sh
-#
-# Để dừng: nhấn Ctrl+C  — script sẽ tắt cả hai tiến trình
-# =============================================================================
 
-set -e
-
-# ── Màu sắc ──────────────────────────────────────────────────────────────────
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-BOLD='\033[1m'
-RESET='\033[0m'
-
-# ── Đường dẫn ────────────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKEND_DIR="$SCRIPT_DIR/starter_v0"
 FRONTEND_DIR="$SCRIPT_DIR/web"
 
-# ── PIDs để dọn dẹp khi thoát ────────────────────────────────────────────────
+BACKEND_HOST="${BACKEND_HOST:-127.0.0.1}"
+BACKEND_PORT="${BACKEND_PORT:-8010}"
+FRONTEND_HOST="${FRONTEND_HOST:-127.0.0.1}"
+FRONTEND_PORT="${FRONTEND_PORT:-5173}"
+
 BACKEND_PID=""
 FRONTEND_PID=""
 
-cleanup() {
-    echo ""
-    echo -e "${YELLOW}⏹  Đang dừng các tiến trình...${RESET}"
-    [ -n "$BACKEND_PID" ]  && kill "$BACKEND_PID"  2>/dev/null && echo -e "${RED}   ✗ Backend  stopped (PID $BACKEND_PID)${RESET}"
-    [ -n "$FRONTEND_PID" ] && kill "$FRONTEND_PID" 2>/dev/null && echo -e "${RED}   ✗ Frontend stopped (PID $FRONTEND_PID)${RESET}"
-    echo -e "${BOLD}👋 Bye!${RESET}"
-    exit 0
+info() {
+  printf '%s\n' "$1"
 }
 
-trap cleanup SIGINT SIGTERM
+cleanup() {
+  info ""
+  info "Stopping dev servers..."
+  if [ -n "${BACKEND_PID}" ] && kill -0 "$BACKEND_PID" 2>/dev/null; then
+    kill "$BACKEND_PID" 2>/dev/null || true
+    info "Stopped backend PID $BACKEND_PID"
+  fi
+  if [ -n "${FRONTEND_PID}" ] && kill -0 "$FRONTEND_PID" 2>/dev/null; then
+    kill "$FRONTEND_PID" 2>/dev/null || true
+    info "Stopped frontend PID $FRONTEND_PID"
+  fi
+}
 
-# ── Banner ───────────────────────────────────────────────────────────────────
-echo -e "${BOLD}${CYAN}"
-echo "╔══════════════════════════════════════════════════╗"
-echo "║       🚀  Research Agent — Dev Launcher          ║"
-echo "║   Backend: FastAPI (uvicorn)  •  Port 8000       ║"
-echo "║   Frontend: Vite (React/TS)   •  Port 5173       ║"
-echo "╚══════════════════════════════════════════════════╝"
-echo -e "${RESET}"
+trap cleanup EXIT INT TERM
 
-# ── Kiểm tra thư mục ─────────────────────────────────────────────────────────
 if [ ! -d "$BACKEND_DIR" ]; then
-    echo -e "${RED}❌ Không tìm thấy thư mục backend: $BACKEND_DIR${RESET}"
-    exit 1
+  info "Backend directory not found: $BACKEND_DIR"
+  exit 1
 fi
 
 if [ ! -d "$FRONTEND_DIR" ]; then
-    echo -e "${RED}❌ Không tìm thấy thư mục frontend: $FRONTEND_DIR${RESET}"
-    exit 1
+  info "Frontend directory not found: $FRONTEND_DIR"
+  exit 1
 fi
 
-# ── Chọn Python interpreter (ưu tiên .venv trong starter_v0) ─────────────────
-if [ -f "$BACKEND_DIR/.venv/Scripts/python" ]; then
-    PYTHON="$BACKEND_DIR/.venv/Scripts/python"           # Windows Git Bash
-elif [ -f "$BACKEND_DIR/.venv/bin/python" ]; then
-    PYTHON="$BACKEND_DIR/.venv/bin/python"               # Linux / macOS
-elif [ -f "$SCRIPT_DIR/.venv/Scripts/python" ]; then
-    PYTHON="$SCRIPT_DIR/.venv/Scripts/python"
-elif [ -f "$SCRIPT_DIR/.venv/bin/python" ]; then
-    PYTHON="$SCRIPT_DIR/.venv/bin/python"
+if [ -x "$BACKEND_DIR/.venv/Scripts/python.exe" ]; then
+  PYTHON="$BACKEND_DIR/.venv/Scripts/python.exe"
+elif [ -x "$BACKEND_DIR/.venv/Scripts/python" ]; then
+  PYTHON="$BACKEND_DIR/.venv/Scripts/python"
+elif [ -x "$BACKEND_DIR/.venv/bin/python" ]; then
+  PYTHON="$BACKEND_DIR/.venv/bin/python"
+elif [ -x "$SCRIPT_DIR/.venv/Scripts/python.exe" ]; then
+  PYTHON="$SCRIPT_DIR/.venv/Scripts/python.exe"
+elif [ -x "$SCRIPT_DIR/.venv/bin/python" ]; then
+  PYTHON="$SCRIPT_DIR/.venv/bin/python"
 else
-    PYTHON="python"
-    echo -e "${YELLOW}⚠  Không tìm thấy .venv — dùng python hệ thống${RESET}"
+  PYTHON="$(command -v python || true)"
 fi
 
-echo -e "${GREEN}🐍 Python: ${PYTHON}${RESET}"
+if [ -z "${PYTHON:-}" ]; then
+  info "Python was not found. Create a venv or install Python first."
+  exit 1
+fi
 
-# ── Kiểm tra node_modules ────────────────────────────────────────────────────
+if command -v npm.cmd >/dev/null 2>&1; then
+  NPM="npm.cmd"
+elif command -v npm >/dev/null 2>&1; then
+  NPM="npm"
+else
+  info "npm was not found. Install Node.js first."
+  exit 1
+fi
+
 if [ ! -d "$FRONTEND_DIR/node_modules" ]; then
-    echo -e "${YELLOW}📦 node_modules chưa tồn tại, đang chạy npm install...${RESET}"
-    (cd "$FRONTEND_DIR" && npm ci)
+  info "node_modules not found. Installing frontend dependencies..."
+  (cd "$FRONTEND_DIR" && "$NPM" ci)
 fi
 
-# ── Khởi động Backend ────────────────────────────────────────────────────────
-echo -e "\n${GREEN}▶  Khởi động Backend  →  http://localhost:8000${RESET}"
-echo -e "   Docs: ${CYAN}http://localhost:8000/docs${RESET}"
+info "Python: $PYTHON"
+info "npm: $NPM"
+info ""
+info "Starting backend:  http://$BACKEND_HOST:$BACKEND_PORT"
 (
-    cd "$BACKEND_DIR"
-    "$PYTHON" -m uvicorn api:app --host 0.0.0.0 --port 8000 --reload
+  cd "$BACKEND_DIR"
+  "$PYTHON" -m uvicorn api:app --host "$BACKEND_HOST" --port "$BACKEND_PORT" --reload
 ) &
 BACKEND_PID=$!
-echo -e "   PID: ${BOLD}$BACKEND_PID${RESET}"
 
-# ── Khởi động Frontend ───────────────────────────────────────────────────────
-echo -e "\n${GREEN}▶  Khởi động Frontend →  http://localhost:5173${RESET}"
+info "Starting frontend: http://$FRONTEND_HOST:$FRONTEND_PORT"
 (
-    cd "$FRONTEND_DIR"
-    npm run dev
+  cd "$FRONTEND_DIR"
+  VITE_API_BASE_URL="http://$BACKEND_HOST:$BACKEND_PORT" \
+    "$NPM" run dev -- --host "$FRONTEND_HOST" --port "$FRONTEND_PORT" --strictPort
 ) &
 FRONTEND_PID=$!
-echo -e "   PID: ${BOLD}$FRONTEND_PID${RESET}"
 
-# ── Chờ ─────────────────────────────────────────────────────────────────────
-echo -e "\n${BOLD}✅ Cả hai tiến trình đã khởi động.${RESET}"
-echo -e "${YELLOW}   Nhấn ${BOLD}Ctrl+C${RESET}${YELLOW} để dừng tất cả.${RESET}\n"
+info ""
+info "Backend PID:  $BACKEND_PID"
+info "Frontend PID: $FRONTEND_PID"
+info "Open: http://$FRONTEND_HOST:$FRONTEND_PORT"
+info "Press Ctrl+C to stop both servers."
 
-wait
+wait "$BACKEND_PID" "$FRONTEND_PID"
