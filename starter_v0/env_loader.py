@@ -14,7 +14,7 @@ def load_dotenv(path: Path, *, override: bool = True) -> None:
         key, value = line.split("=", 1)
         key = key.strip()
         value = value.strip().strip("\"'")
-        if key and (override or key not in os.environ):
+        if key and value and (override or key not in os.environ):
             os.environ[key] = value
 
 
