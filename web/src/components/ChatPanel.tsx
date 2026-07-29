@@ -1,12 +1,17 @@
-import { Loader2, Send, Settings2 } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { Activity, CircleCheck, Loader2, Send, Settings2 } from "lucide-react";
+import { FormEvent, useEffect, useState } from "react";
 import { sendChat } from "../lib/api";
 import type { ChatMessage, ChatResponse, Evidence } from "../types/agent";
+import { MarkdownContent } from "./MarkdownContent";
 import { VersionSelector } from "./VersionSelector";
 
 type ChatPanelProps = {
   evidence: Evidence | null;
   onResult: (result: ChatResponse) => void;
+};
+
+type DisplayMessage = ChatMessage & {
+  trace?: ChatResponse;
 };
 
 const starterPrompts = [
@@ -17,7 +22,7 @@ const starterPrompts = [
 ];
 
 export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [input, setInput] = useState("");
   const [provider, setProvider] = useState(evidence?.defaults.provider || "nvidia");
   const [version, setVersion] = useState(evidence?.defaults.version || "v3");
@@ -27,11 +32,6 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
   const [error, setError] = useState<string | null>(null);
 
   const canSubmit = input.trim().length > 0 && !isSending;
-  const latestAssistant = useMemo(
-    () => [...messages].reverse().find((message) => message.role === "assistant"),
-    [messages]
-  );
-
   useEffect(() => {
     if (evidence?.defaults.provider) {
       setProvider(evidence.defaults.provider);
@@ -46,7 +46,7 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
     setIsSending(true);
     setError(null);
     setInput("");
-    const nextMessages: ChatMessage[] = [...messages, { role: "user", content: message }];
+    const nextMessages: DisplayMessage[] = [...messages, { role: "user", content: message }];
     setMessages(nextMessages);
 
     try {
@@ -55,10 +55,14 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
         provider,
         model: model.trim() || undefined,
         version,
-        history: messages,
+        history: messages.map(({ role, content }) => ({ role, content })),
         max_tool_rounds: maxRounds
       });
-      const assistant: ChatMessage = { role: "assistant", content: result.assistant_text || "(empty response)" };
+      const assistant: DisplayMessage = {
+        role: "assistant",
+        content: result.assistant_text || "(empty response)",
+        trace: result
+      };
       setMessages([...nextMessages, assistant]);
       onResult(result);
     } catch (err) {
@@ -123,13 +127,19 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
           messages.map((message, index) => (
             <div className={`message ${message.role}`} key={`${message.role}-${index}`}>
               <span>{message.role}</span>
-              <p>{message.content}</p>
+              {message.role === "assistant" ? (
+                <>
+                  <MarkdownContent content={message.content} />
+                  <MessageTraceSummary result={message.trace} />
+                </>
+              ) : (
+                <p>{message.content}</p>
+              )}
             </div>
           ))
         )}
       </div>
 
-      {latestAssistant && <div className="latest-answer">{latestAssistant.content}</div>}
       {error && <div className="error-box">{error}</div>}
 
       <form className="chat-form" onSubmit={handleSubmit}>
@@ -146,5 +156,36 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
         </button>
       </form>
     </section>
+  );
+}
+
+function MessageTraceSummary({ result }: { result?: ChatResponse }) {
+  if (!result) return null;
+
+  const toolNames = result.tool_events
+    .map((event) => event.tool)
+    .filter((name): name is string => Boolean(name));
+  const toolRounds = result.rounds.filter(
+    (round) => (round.tool_calls?.length || round.tool_results?.length || 0) > 0
+  ).length;
+
+  if (toolNames.length === 0) {
+    return (
+      <div className="message-trace direct">
+        <CircleCheck size={15} />
+        <strong>Direct answer</strong>
+        <span>No tool calls</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="message-trace">
+      <Activity size={15} />
+      <strong>{toolNames.length} tool call(s)</strong>
+      <span>
+        {toolRounds} round(s) · {toolNames.join(" → ")}
+      </span>
+    </div>
   );
 }

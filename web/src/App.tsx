@@ -47,8 +47,8 @@ export default function App() {
     return { events, rounds };
   }, [runDetail]);
 
-  const activeRounds = chatResult?.rounds || selectedRunTrace.rounds;
-  const activeEvents = chatResult?.tool_events || selectedRunTrace.events;
+  const activeRounds = chatResult?.rounds || [];
+  const activeEvents = chatResult?.tool_events || [];
 
   return (
     <AppShell
