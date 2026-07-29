@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import { AlertTriangle, FileJson } from "lucide-react";
-=======
 import { AlertTriangle, CheckCircle2, FileJson, Filter, Search } from "lucide-react";
 import { useMemo, useState } from "react";
->>>>>>> main
 import type { RunDetail, RunResult, RunSummary } from "../types/agent";
 
 type RunEvidenceTableProps = {

@@ -18,11 +18,7 @@ import type {
 } from "./types/agent";
 
 export default function App() {
-<<<<<<< HEAD
-  const [view, setView] = useState("chat");
-=======
   const [view, setView] = useState("demo");
->>>>>>> main
   const [status, setStatus] = useState<Status>("idle");
   const [evidence, setEvidence] = useState<Evidence | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -72,8 +68,7 @@ export default function App() {
 
   const activeRounds = chatResult?.rounds || [];
   const activeEvents = chatResult?.tool_events || [];
-<<<<<<< HEAD
-=======
+
   const counts = {
     runs: evidence?.runs.length || 0,
     transcripts: evidence?.transcripts.length || 0,
@@ -81,7 +76,6 @@ export default function App() {
     versions: evidence?.version_log.length || 0
   };
 
->>>>>>> main
   const titleByView: Record<string, { eyebrow: string; title: string; description: string }> = {
     demo: {
       eyebrow: "Live demo",
@@ -109,11 +103,8 @@ export default function App() {
       description: "Review saved chat sessions, turns, and the tool events captured during each demo."
     }
   };
-<<<<<<< HEAD
-  const page = titleByView[view] || titleByView.chat;
-=======
+
   const page = titleByView[view] || titleByView.demo;
->>>>>>> main
 
   return (
     <AppShell
@@ -149,12 +140,6 @@ export default function App() {
         </div>
       )}
 
-<<<<<<< HEAD
-      {view === "chat" && (
-        <div className="chat-workspace">
-          <ChatPanel evidence={evidence} onResult={setChatResult} />
-          <ToolTracePanel rounds={activeRounds} events={activeEvents} />
-=======
       {status === "demo" && (
         <div className="notice-box">
           Backend is not reachable, so this preview is using frontend evaluation data. Start the FastAPI service to
@@ -172,7 +157,6 @@ export default function App() {
               <ToolTracePanel rounds={activeRounds} events={activeEvents} />
             </div>
           </div>
->>>>>>> main
         </div>
       )}
 
@@ -194,8 +178,6 @@ export default function App() {
 
       {view === "tools" && (
         <ToolCatalog tools={evidence?.tools || []} />
-<<<<<<< HEAD
-=======
       )}
 
       {view === "transcripts" && (
@@ -205,7 +187,6 @@ export default function App() {
           detail={transcriptDetail}
           onSelectTranscript={setSelectedTranscript}
         />
->>>>>>> main
       )}
     </AppShell>
   );

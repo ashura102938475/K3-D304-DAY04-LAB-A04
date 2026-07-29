@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import type { ChatRequest, ChatResponse, Evidence, RunDetail } from "../types/agent";
-=======
 import type { ChatRequest, ChatResponse, Evidence, RunDetail, TranscriptDetail } from "../types/agent";
 import { mockChatResponse, mockEvidence, mockRunDetail, mockTranscriptDetail } from "./mockData";
->>>>>>> main
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 

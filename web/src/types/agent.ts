@@ -103,21 +103,6 @@ export type ToolDeclaration = {
     properties?: Record<string, unknown>;
     required?: string[];
   };
-<<<<<<< HEAD
-};
-
-export type Evidence = {
-  root: string;
-  runs: RunSummary[];
-  version_log: VersionLogRow[];
-  tools: ToolDeclaration[];
-  transcripts: Array<Record<string, unknown>>;
-  defaults: {
-    provider: string;
-    version: string;
-    max_tool_rounds: number;
-  };
-=======
 };
 
 export type Evidence = {
@@ -164,5 +149,4 @@ export type TranscriptDetail = TranscriptSummary & {
   history_window?: number;
   max_tool_rounds?: number;
   turns?: TranscriptTurn[];
->>>>>>> main
 };

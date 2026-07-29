@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import { Activity, CircleCheck, Loader2, Send, Settings2, Sparkles } from "lucide-react";
-=======
 import {
   Activity,
   CircleCheck,
@@ -12,7 +9,6 @@ import {
   Settings2,
   Sparkles
 } from "lucide-react";
->>>>>>> main
 import { FormEvent, useEffect, useState } from "react";
 import { sendChat } from "../lib/api";
 import type { ChatMessage, ChatResponse, Evidence } from "../types/agent";
@@ -111,13 +107,6 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
   }
 
   return (
-<<<<<<< HEAD
-    <section className="panel chat-panel agent-console">
-      <div className="panel-heading compact-heading">
-        <div>
-          <h2>Agent chat</h2>
-          <p>Current version: {version}. Provider: {provider}.</p>
-=======
     <section className="panel chat-panel">
       <div className="panel-heading chat-heading">
         <div>
@@ -127,41 +116,9 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
         <div className={isSending ? "run-state running" : "run-state"}>
           {isSending ? <Loader2 className="spin" size={16} /> : <CircleCheck size={16} />}
           <span>{isSending ? "Running" : "Ready"}</span>
->>>>>>> main
         </div>
       </div>
 
-<<<<<<< HEAD
-      <div className="control-strip">
-        <label>
-          Provider
-          <select value={provider} onChange={(event) => setProvider(event.target.value)}>
-            <option value="openrouter">openrouter</option>
-            <option value="openai">openai</option>
-            <option value="anthropic">anthropic</option>
-            <option value="gemini">gemini</option>
-            <option value="nvidia">nvidia</option>
-          </select>
-        </label>
-        <label>
-          Model
-          <input value={model} onChange={(event) => setModel(event.target.value)} placeholder="provider default" />
-        </label>
-        <label>
-          Rounds
-          <input
-            min={1}
-            max={8}
-            type="number"
-            value={maxRounds}
-            onChange={(event) => setMaxRounds(Number(event.target.value))}
-          />
-        </label>
-      </div>
-
-      <VersionSelector rows={evidence?.version_log || []} value={version} onChange={setVersion} />
-
-=======
       <div className="demo-toolbar">
         <div className="control-strip">
           <label>
@@ -199,19 +156,11 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
         </div>
       </div>
 
->>>>>>> main
       <div className="sample-row">
         <div className="sample-label">
           <Sparkles size={15} />
           <span>Demo prompts</span>
         </div>
-<<<<<<< HEAD
-        {starterPrompts.map((prompt) => (
-          <button key={prompt} type="button" onClick={() => setInput(prompt)}>
-            {prompt}
-          </button>
-        ))}
-=======
         {starterPrompts.map((item) => {
           const Icon = item.icon;
           return (
@@ -221,7 +170,6 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
             </button>
           );
         })}
->>>>>>> main
       </div>
 
       <div className="message-list" aria-live="polite">
@@ -255,11 +203,7 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
           aria-label="Agent request"
           value={input}
           onChange={(event) => setInput(event.target.value)}
-<<<<<<< HEAD
-          placeholder="Ask for news, tweets, a URL summary, papers, or GitHub repositories..."
-=======
           placeholder="Ask for news, tweets, URL summaries, papers, policies, or GitHub repositories..."
->>>>>>> main
           rows={3}
         />
         <button disabled={!canSubmit} type="submit">

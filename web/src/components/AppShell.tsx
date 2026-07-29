@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Activity, Bot, GitCompare, LayoutDashboard, Wrench } from "lucide-react";
-=======
 import { Activity, Bot, FileClock, GitCompare, LayoutDashboard, Wrench } from "lucide-react";
->>>>>>> main
 import type { ReactNode } from "react";
 
 type AppShellProps = {

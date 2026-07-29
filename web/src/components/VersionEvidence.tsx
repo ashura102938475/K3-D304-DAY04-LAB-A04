@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { GitCommitHorizontal } from "lucide-react";
-=======
 import { AlertTriangle, GitCommitHorizontal } from "lucide-react";
->>>>>>> main
 import type { VersionLogRow } from "../types/agent";
 
 type VersionEvidenceProps = {
