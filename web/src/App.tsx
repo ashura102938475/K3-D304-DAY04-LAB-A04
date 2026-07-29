@@ -9,7 +9,7 @@ import { getEvidence, getRunDetail } from "./lib/api";
 import type { ChatResponse, Evidence, RunDetail, Status, ToolEvent, ToolRound } from "./types/agent";
 
 export default function App() {
-  const [view, setView] = useState("playground");
+  const [view, setView] = useState("chat");
   const [status, setStatus] = useState<Status>("idle");
   const [evidence, setEvidence] = useState<Evidence | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -49,6 +49,29 @@ export default function App() {
 
   const activeRounds = chatResult?.rounds || [];
   const activeEvents = chatResult?.tool_events || [];
+  const titleByView: Record<string, { eyebrow: string; title: string; description: string }> = {
+    chat: {
+      eyebrow: "Live agent",
+      title: "Chat and inspect",
+      description: "Ask one request, then review the exact tool calls and results used to answer it."
+    },
+    runs: {
+      eyebrow: "Evidence",
+      title: "Run results",
+      description: "Compare saved eval runs, inspect failing cases, and open the trace behind a selected run."
+    },
+    versions: {
+      eyebrow: "Prompt history",
+      title: "Version timeline",
+      description: "Review each prompt/tool iteration, the hypothesis behind it, and its measured effect."
+    },
+    tools: {
+      eyebrow: "Tool interface",
+      title: "Tool catalog",
+      description: "See the declared tools, required arguments, and which tools are core, custom, or optional."
+    }
+  };
+  const page = titleByView[view] || titleByView.chat;
 
   return (
     <AppShell
@@ -58,11 +81,9 @@ export default function App() {
     >
       <header className="page-header">
         <div>
-          <p className="eyebrow">Day 04 lab</p>
-          <h1>Research Agent Control Room</h1>
-          <p>
-            Run the agent, inspect tool calls, and compare prompt/tool versions from the lab artifacts.
-          </p>
+          <p className="eyebrow">{page.eyebrow}</p>
+          <h1>{page.title}</h1>
+          <p>{page.description}</p>
         </div>
         <div className="header-stats">
           <div>
@@ -82,12 +103,12 @@ export default function App() {
 
       {status === "error" && (
         <div className="error-box">
-          API is not reachable. Start the backend on port 8000, then refresh. Detail: {loadError}
+          API is not reachable. Start the backend with start.sh, then refresh. Detail: {loadError}
         </div>
       )}
 
-      {view === "playground" && (
-        <div className="dashboard-grid">
+      {view === "chat" && (
+        <div className="chat-workspace">
           <ChatPanel evidence={evidence} onResult={setChatResult} />
           <ToolTracePanel rounds={activeRounds} events={activeEvents} />
         </div>
@@ -106,10 +127,11 @@ export default function App() {
       )}
 
       {view === "versions" && (
-        <div className="stack">
-          <VersionEvidence rows={evidence?.version_log || []} />
-          <ToolCatalog tools={evidence?.tools || []} />
-        </div>
+        <VersionEvidence rows={evidence?.version_log || []} />
+      )}
+
+      {view === "tools" && (
+        <ToolCatalog tools={evidence?.tools || []} />
       )}
     </AppShell>
   );
