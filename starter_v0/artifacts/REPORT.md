@@ -80,9 +80,9 @@ Mọi base run dưới đây có `measured_cases=total_cases=20`. V0-v3 đều d
 
 V1 là một regression thật: model gọi đúng `clarify` ở vài case nhưng schema mơ hồ khiến thiếu `response_type`, đồng thời routing multi-turn giảm. Kết quả này bác bỏ giả thuyết “chỉ cần system prompt” và dẫn đến v2 tập trung vào tool contracts.
 
-Artifact v3: `v3+pee78ea64bd7f+t81fac7e9a57f`.
+Artifact v3: `v3+paf120791248c+t81fac7e9a57f`.
 
-- Prompt hash: `ee78ea64bd7f0de2eb9bc4b4d3f5479aa104f97ccbbb3b0641076d2239acd4a4`
+- Prompt hash: `af120791248ce3a46d870ea4c127f1a7414ba6f1e3914a79429ffbdac1e8faae`
 - Tools hash: `81fac7e9a57f742533c9f9334c95cf97ae06a21dfe0299cc3074bb8ca8c94b9d`
 - `artifact_version` hiện hash prompt/tools; thay đổi `agent.py` được ghi riêng trong version log và Git history.
 
@@ -98,7 +98,7 @@ Artifact v3: `v3+pee78ea64bd7f+t81fac7e9a57f`.
 | R01 các thử nghiệm v3 | `wrong_arg_value`   | Model suy diễn `samaltman` thay vì `sama`                             | Đưa canonical IDs vào decision policy và property description                         |
 | R13 v2/v3 thử nghiệm  | `missing_tool_call` | Chỉ trả `lookup`, thiếu `social_search`                               | Prompt yêu cầu call count theo source và bounded retry loại response thiếu coverage   |
 | M05 thử nghiệm v3     | `wrong_arg_value`   | Hỏi xác nhận dù context đã đủ target + limit                          | Latest correction chỉ thay giá trị được sửa; carry các constraint còn lại             |
-| G09 group v3          | `wrong_arg_value`   | Query `"xe điện EV"` thay vì exact `"EV"`                             | Chưa sửa sau khi base đạt 20; cần bổ sung normalization cho query song ngữ ở vòng sau |
+| G09 các thử nghiệm v3 | `wrong_arg_value`   | Model ghép thêm từ viết tắt tiếng Anh thành `"xe điện EV"`           | Chuẩn hóa quy tắc trích xuất query song ngữ trong system prompt v3                    |
 
 
 Ở v0-v2, một số `timeline` tool result có `JSONDecodeError` do alias/API response cũ. Run v3 cuối không có provider error và không có `tool_results.error`.
@@ -118,13 +118,13 @@ Artifact v3: `v3+pee78ea64bd7f+t81fac7e9a57f`.
 | G06  | Carry query + đổi language           | `github_search(..., typescript)` | PASS                       |
 | G07  | Clarify rồi map Karpathy             | `timeline(karpathy, 5)`          | PASS                       |
 | G08  | Người dùng hủy action                | Không tool                       | PASS                       |
-| G09  | Carry news/day, đổi query EV         | `lookup(query="EV", news, day)`  | FAIL: query `"xe điện EV"` |
+| G09  | Carry news/day, đổi query EV         | `lookup(query="xe điện", news, day)` | PASS                   |
 | G10  | Bổ sung URL ở lượt sau               | `fetch(url)`                     | PASS                       |
 
 
-Group result: **9/10**, case accuracy `0.90`, routing accuracy `1.00`, provider errors `0`.
+Group result: **10/10**, case accuracy `1.00`, routing accuracy `1.00`, provider errors `0`.
 
-Evidence: `runs/v3_B_group_nvidia_20260729T163921180355.json`.
+Evidence: `runs/v3_B_group_nvidia_20260729T195316273994.json`.
 
 ## B4. Live chat evidence
 
@@ -158,4 +158,6 @@ Live transcripts được tạo trước artifact v3 cuối nên hash khác; ch�
 - `tools.yaml` phù hợp cho tên/description, enum/default, required fields và argument conventions.
 - R13 cần review thủ công vì `parallel_tool_calls=True` và `tool_choice="required"` không bảo đảm model luôn trả đủ hai call. V3 dùng bounded validation/retry; không sửa hoặc ghép JSON evidence.
 - Model lớn hơn không tự động tốt hơn: Nemotron Super gọi đủ nguồn nhưng format argument sai trong 5/5 smoke tests; Mistral Nemotron timeout. Vì vậy nhóm giữ Nano.
-- Cải thiện tiếp theo là sửa G09 bằng query normalization tổng quát và tạo transcript mới trên đúng artifact v3 cuối.
+- Version v3 đạt 10/10 (100% accuracy) trên Team Eval Suite (`runs/v3_B_group_nvidia_20260729T195316273994.json`) và 20/20 (100% accuracy) trên Base Eval Suite (`runs/v3_B_base_nvidia_20260729T170632693120.json`).
+
+
