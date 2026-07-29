@@ -4,7 +4,7 @@
 
 - Nguyễn Chí Hiếu - `2A202601931`
 - Nguyễn Anh Trà - `2A202601735`
-- Trần Văn Tài - `2A20261339`
+- Trần Văn Tài - `2A202601339`
 - Provider/model: NVIDIA NIM - `nvidia/nemotron-3-nano-30b-a3b`
 
 ---
