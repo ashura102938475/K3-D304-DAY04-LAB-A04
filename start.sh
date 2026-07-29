@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eu
+set -o pipefail 2>/dev/null || true
 
 # Start the Day 04 Research Agent backend and React frontend together.
 # Usage:
 #   ./start.sh
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BACKEND_DIR="$SCRIPT_DIR/starter_v0"
 FRONTEND_DIR="$SCRIPT_DIR/web"
 
 BACKEND_HOST="${BACKEND_HOST:-127.0.0.1}"
-BACKEND_PORT="${BACKEND_PORT:-8010}"
+BACKEND_PORT="${BACKEND_PORT:-}"
+PREFERRED_BACKEND_PORT="${PREFERRED_BACKEND_PORT:-8010}"
 FRONTEND_HOST="${FRONTEND_HOST:-127.0.0.1}"
-FRONTEND_PORT="${FRONTEND_PORT:-5173}"
+FRONTEND_PORT="${FRONTEND_PORT:-}"
+PREFERRED_FRONTEND_PORT="${PREFERRED_FRONTEND_PORT:-5173}"
 
 BACKEND_PID=""
 FRONTEND_PID=""
@@ -65,6 +68,40 @@ if [ -z "${PYTHON:-}" ]; then
   exit 1
 fi
 
+choose_port() {
+  "$PYTHON" - "$1" "$2" <<'PY'
+import socket
+import sys
+
+host = sys.argv[1]
+preferred = int(sys.argv[2])
+candidates = [
+    preferred,
+    preferred + 1,
+    preferred + 2,
+    preferred + 10,
+    preferred + 100,
+    18010,
+    28010,
+    38010,
+]
+seen = set()
+for port in candidates:
+    if port in seen:
+        continue
+    seen.add(port)
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        try:
+            sock.bind((host, port))
+        except OSError:
+            continue
+    print(port)
+    raise SystemExit(0)
+
+raise SystemExit(f"No bindable port found for {host}")
+PY
+}
+
 if command -v npm.cmd >/dev/null 2>&1; then
   NPM="npm.cmd"
 elif command -v npm >/dev/null 2>&1; then
@@ -79,13 +116,25 @@ if [ ! -d "$FRONTEND_DIR/node_modules" ]; then
   (cd "$FRONTEND_DIR" && "$NPM" ci)
 fi
 
+if [ -z "$BACKEND_PORT" ]; then
+  BACKEND_PORT="$(choose_port "$BACKEND_HOST" "$PREFERRED_BACKEND_PORT")"
+fi
+
+if [ -z "$FRONTEND_PORT" ]; then
+  FRONTEND_PORT="$(choose_port "$FRONTEND_HOST" "$PREFERRED_FRONTEND_PORT")"
+fi
+
 info "Python: $PYTHON"
 info "npm: $NPM"
 info ""
 info "Starting backend:  http://$BACKEND_HOST:$BACKEND_PORT"
 (
   cd "$BACKEND_DIR"
-  "$PYTHON" -m uvicorn api:app --host "$BACKEND_HOST" --port "$BACKEND_PORT" --reload
+  if [ "${BACKEND_RELOAD:-0}" = "1" ]; then
+    "$PYTHON" -m uvicorn api:app --host "$BACKEND_HOST" --port "$BACKEND_PORT" --reload
+  else
+    "$PYTHON" -m uvicorn api:app --host "$BACKEND_HOST" --port "$BACKEND_PORT"
+  fi
 ) &
 BACKEND_PID=$!
 

@@ -1,4 +1,4 @@
-import { Activity, CircleCheck, Loader2, Send, Settings2 } from "lucide-react";
+import { Activity, CircleCheck, Loader2, Send, Settings2, Sparkles } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
 import { sendChat } from "../lib/api";
 import type { ChatMessage, ChatResponse, Evidence } from "../types/agent";
@@ -74,16 +74,16 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
   }
 
   return (
-    <section className="panel chat-panel">
-      <div className="panel-heading">
+    <section className="panel chat-panel agent-console">
+      <div className="panel-heading compact-heading">
         <div>
-          <h2>Live playground</h2>
-          <p>Ask the agent and inspect its tool choices.</p>
+          <h2>Agent chat</h2>
+          <p>Current version: {version}. Provider: {provider}.</p>
         </div>
         <Settings2 size={20} />
       </div>
 
-      <div className="controls-grid">
+      <div className="control-strip">
         <label>
           Provider
           <select value={provider} onChange={(event) => setProvider(event.target.value)}>
@@ -95,11 +95,11 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
           </select>
         </label>
         <label>
-          Model override
+          Model
           <input value={model} onChange={(event) => setModel(event.target.value)} placeholder="provider default" />
         </label>
         <label>
-          Max rounds
+          Rounds
           <input
             min={1}
             max={8}
@@ -112,7 +112,11 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
 
       <VersionSelector rows={evidence?.version_log || []} value={version} onChange={setVersion} />
 
-      <div className="prompt-pills">
+      <div className="sample-row">
+        <div className="sample-label">
+          <Sparkles size={15} />
+          <span>Samples</span>
+        </div>
         {starterPrompts.map((prompt) => (
           <button key={prompt} type="button" onClick={() => setInput(prompt)}>
             {prompt}
@@ -122,11 +126,14 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
 
       <div className="message-list" aria-live="polite">
         {messages.length === 0 ? (
-          <div className="empty-state">No messages yet. Pick a sample or type a request.</div>
+          <div className="empty-chat">
+            <strong>Start with one clear research request.</strong>
+            <span>The next response will appear here, and the tool trace will update on the right.</span>
+          </div>
         ) : (
           messages.map((message, index) => (
             <div className={`message ${message.role}`} key={`${message.role}-${index}`}>
-              <span>{message.role}</span>
+              <span className="message-role">{message.role}</span>
               {message.role === "assistant" ? (
                 <>
                   <MarkdownContent content={message.content} />
@@ -147,7 +154,7 @@ export function ChatPanel({ evidence, onResult }: ChatPanelProps) {
           aria-label="Agent request"
           value={input}
           onChange={(event) => setInput(event.target.value)}
-          placeholder="Ask a research request..."
+          placeholder="Ask for news, tweets, a URL summary, papers, or GitHub repositories..."
           rows={3}
         />
         <button disabled={!canSubmit} type="submit">
