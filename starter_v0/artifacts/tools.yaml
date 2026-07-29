@@ -9,51 +9,51 @@
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: "Gửi câu hỏi cho người dùng. Dùng khi thiếu thông tin bắt buộc (screenname, URL) với response_type='text', HOẶC khi cần xin người dùng xác nhận trước khi thực hiện hành động gửi/đăng bài với response_type='yes_no'."
     parameters:
       type: object
       properties:
-        question: {type: string, default: "", description: "Câu hỏi"}
-        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời"}
+        question: {type: string, default: "", description: "Câu hỏi gửi người dùng"}
+        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời: 'text' khi thiếu thông tin, 'yes_no' khi cần xác nhận hành động"}
         options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn"}
       required: [question]
 
   - name: timeline
-    description: "Lấy các bài đăng gần đây."
+    description: "Lấy các bài đăng gần đây của MỘT tài khoản cụ thể. Tham số screenname là Twitter handle chính thức dạng chữ thường không có khoảng trắng (ví dụ: elonmusk, sama, karpathy)."
     parameters:
       type: object
       properties:
-        screenname: {type: string, default: "", description: "Tên tài khoản"}
-        limit: {type: integer, default: 5, description: "Số lượng"}
+        screenname: {type: string, default: "", description: "Twitter handle viết thường không dấu cách (ví dụ: elonmusk, sama, karpathy)"}
+        limit: {type: integer, default: 5, description: "Số lượng bài đăng cần lấy"}
       required: [screenname]
 
   - name: social_search
-    description: "Tìm trên mạng xã hội."
+    description: "Tìm kiếm các bài đăng, thảo luận trên mạng xã hội Twitter/X theo từ khóa. Chọn search_type='Top' khi tìm bài đăng phổ biến/nổi bật, 'Latest' cho bài đăng mới nhất."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Từ khóa"}
-        search_type: {type: string, enum: [Latest, Top], default: "Latest", description: "Cách sắp xếp"}
+        query: {type: string, default: "", description: "Từ khóa tìm kiếm trên Twitter"}
+        search_type: {type: string, enum: [Latest, Top], default: "Latest", description: "Cách sắp xếp: 'Top' cho bài đăng phổ biến/nổi bật, 'Latest' cho mới nhất"}
         limit: {type: integer, default: 5, description: "Số lượng"}
       required: [query]
 
   - name: lookup
-    description: "Tra cứu thông tin trên internet."
+    description: "Tra cứu thông tin và tin tức thời sự trên Web. Nếu hỏi về tin tức (tin tức AI, tin công nghệ), bắt buộc đặt topic='news'. Trích xuất các từ chỉ thời gian ('hôm nay' -> day, 'tuần này' -> week) vào parameter timeframe và loại bỏ từ thời gian đó khỏi query."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Truy vấn"}
-        topic: {type: string, enum: [general, news], default: "general", description: "Phân loại"}
-        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian"}
+        query: {type: string, default: "", description: "Từ khóa chủ đề tìm kiếm (không chứa các từ chỉ thời gian như 'hôm nay', 'tuần này')"}
+        topic: {type: string, enum: [general, news], default: "general", description: "Phân loại: chọn 'news' cho tin tức/thời sự, 'general' cho thông tin chung"}
+        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian: 'day' cho hôm nay, 'week' cho tuần này, 'month' cho tháng này"}
         max_results: {type: integer, default: 5, description: "Số kết quả"}
       required: [query]
 
   - name: fetch
-    description: "Lấy nội dung từ một địa chỉ."
+    description: "Lấy nội dung chi tiết từ một địa chỉ URL cụ thể."
     parameters:
       type: object
       properties:
-        url: {type: string, default: "", description: "Địa chỉ"}
+        url: {type: string, default: "", description: "Địa chỉ URL cụ thể"}
       required: [url]
 
   - name: format
@@ -79,11 +79,11 @@ tools:
 
   # ---------------- Bonus tools ----------------
   - name: send
-    description: "Gửi một đoạn văn bản đi."
+    description: "Gửi một đoạn văn bản/bản tin. Yêu cầu phải xin xác nhận từ người dùng bằng tool clarify(response_type='yes_no') trước khi gọi tool này."
     parameters:
       type: object
       properties:
-        text: {type: string, default: "", description: "Nội dung"}
+        text: {type: string, default: "", description: "Nội dung tin nhắn"}
         confirmed: {type: boolean, default: false, description: "Cờ xác nhận"}
       required: [text]
 
